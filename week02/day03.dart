@@ -27,4 +27,10 @@ void main() {
   // 15
 
   // TODO: 이 아래에 직접 작성하세요.
+  final n = 5;
+  var total = 0;
+  for(var i = 1; i <= n; i++) {
+    total = total + i;
+  }
+  print(total);
 }

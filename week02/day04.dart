@@ -10,11 +10,11 @@
 
 void main() {
   // [따라 읽는 예제]
-  var remaining = 2;
-  while (remaining > 0) {
-    print(remaining);
-    remaining--;
-  }
+  // var remaining = 2;
+  // while (remaining > 0) {
+  //   print(remaining);
+  //   remaining--;
+  // }
 
   // [직접 풀 문제]
   // var count = 3;을 직접 작성하세요.
@@ -29,4 +29,10 @@ void main() {
   // 출발!
 
   // TODO: 이 아래에 직접 작성하세요.
+  var count = 3;
+  while(0 < count) {
+    print(count);
+    count--;
+  }
+  print('출발!');
 }

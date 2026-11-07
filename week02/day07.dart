@@ -24,4 +24,17 @@ void main() {
   // 목표 미달
 
   // TODO: 이 아래에 직접 작성하세요.
+  var distance = [2, 3, 4];
+  var targetKm = 10;
+  var total = 0;
+  for (var i in distance) {
+    total += i; 
+  }
+  print('총 ${total}km');
+  if(total >= targetKm) {
+    print('목표 달성');
+  }
+  else {
+    print('목표 미달');
+  }
 }

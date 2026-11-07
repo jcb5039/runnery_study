@@ -34,4 +34,12 @@ void main() {
   // 8
 
   // TODO: 이 아래에 직접 작성하세요.
+  var distance = [2, 4, 6];
+  print(distance[0]);
+  print(distance.length);
+  distance.add(8);
+  print(distance);
+  for(var i in distance) {
+    print(i);
+  }
 }

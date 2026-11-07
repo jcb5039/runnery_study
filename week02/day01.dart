@@ -28,4 +28,14 @@ void main() {
   // 걷기
 
   // TODO: 이 아래에 직접 작성하세요.
+  var speed = 5;
+  if(speed >= 8) {
+    print('달리기');
+  }
+  else if(0 < speed && speed < 8) {
+    print('걷기');
+  }
+  else {
+    print('정지');
+  }
 }

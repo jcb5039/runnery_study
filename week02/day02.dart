@@ -27,4 +27,7 @@ void main() {
   // 5
 
   // TODO: 이 아래에 직접 작성하세요.
+  for(var i = 1; i <= 2; i++) {
+    print(i);
+  }
 }
