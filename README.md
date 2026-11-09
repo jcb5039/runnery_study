@@ -51,11 +51,30 @@ dart run week01/day01.dart
 - [16주 학습 순서](roadmap.md): 매주 배울 것, 만들 것, 다음 단계로 갈 기준
 - [1주차](week01/README.md): 출력·변수·계산·조건문, 하루 한 파일
 - [2주차](week02/README.md): 조건문 복습·반복문·목록 맛보기, 하루 한 파일
+- [3주차](week03/README.md): 함수 정의·호출·입력·반환
+- [4주차](week04/README.md): List·Map·where·map·fold
+- [5주차](week05/README.md): 클래스·객체·생성자·getter
+- [6주차](week06/README.md): null·Future·async/await·실패 처리
+- [7주차](week07/README.md): Flutter 기본 구조와 위젯 배치
+- [8주차](week08/README.md): 버튼·상태·위젯 생명주기
+- [9주차](week09/README.md): 화면 이동과 값 전달
+- [10주차](week10/README.md): 날짜·시간·속도·페이스 계산
+- [11주차](week11/README.md): JSON과 파일 저장·복원
+- [12주차](week12/README.md): 변경 알림과 저장 후 화면 갱신
+- [13주차](week13/README.md): Stream·Timer·앱 생명주기
+- [14주차](week14/README.md): 가짜 로그인·로딩·성공·실패
+- [15주차](week15/README.md): 오프라인 저장과 동기화 모형
+- [16주차](week16/README.md): Git 연습과 기능 전체 흐름 설명
 - [함수를 처음 배울 때](guides/functions.md): 정의와 호출을 한 화면에서 연결해서 설명
+- [Flutter 기본 구조](guides/flutter-structure.md): 앱 시작부터 화면을 그리는 위젯까지
+- [위젯과 앱 생명주기](guides/flutter-lifecycle.md): 생성·갱신·정리와 앱 활성 상태 구분
+- [Flutter 실습 앱 실행](practice_app/README.md): 그날 파일 선택과 예제·문제 실행 방법
 - [Runnery 코드 지도](project-map.md): 배운 개념을 실제 파일에서 어디에 적용하는지
 - [학습 기록](notes.md): 이해한 내용과 막힌 부분 기록
 
-첫 2주는 실행 가능한 실습 14개와 별도 해설을 제공합니다. 3~16주는 주별 실습 과제와 완료 기준을 제공합니다. 첫 2주를 마친 뒤 실제 이해 정도에 맞춰 다음 실습의 난이도를 조정합니다. 기존 `dart-study` 문제는 필요한 개념을 다시 볼 때 참고할 수 있습니다.
+1~16주 모두 하루별 실습과 별도 해설을 제공합니다. 3~16주에는 98일분을 추가했으며, 짧은 예제 → 줄별 설명 → 직접 실습 → 입력 변경 → 자기 말로 설명 순서로 진행합니다. Dart 실습은 각 `weekXX` 폴더, Flutter 실습은 `practice_app/lib/weekXX`에 있고 각 주 안내에서 바로 열 수 있습니다. Flutter도 날짜별 파일마다 독립된 `main()`을 가집니다.
+
+첫 2주를 마쳤다면 [심화 확인](checkpoint02/README.md)에서 반복 종료와 값의 변화를 설명할 수 있는지 확인한 뒤 [3주차](week03/README.md)를 시작하세요. 뒤의 자료가 준비되어 있어도 통과 기준이 어려우면 해당 날짜를 반복합니다. 기존 `dart-study` 문제는 필요한 개념을 다시 볼 때 참고할 수 있습니다.
 
 ## 이해했다는 기준
 

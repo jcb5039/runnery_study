@@ -42,9 +42,22 @@
 // 17이나 2 같은 정답 숫자를 출력문에 직접 넣지 말고 결과 변수를 사용하세요.
 
 void main() {
+var distances = [2, 5, 0, 7, 3];
+var dailyGoalKm = 5;
+var totalKm = 0;
+var achievedDays = 0;
+
+for(var i in distances) {
+  totalKm += i;
+  if(i >= dailyGoalKm) {
+    achievedDays += 1;
+  }
+}
+print('총 거리: ${totalKm}km');
+print('하루 목표 달성: $achievedDays일');
   // TODO: 입력 선언 → 계산 → 출력 순서로 직접 작성하세요.
 }
 
-// [작성 후 설명 — 답을 주석으로 적으세요]
+// [작성 후 설명 — 답을 주석으로 적으세요
 // B에서 totalKm이 5인데도 achievedDays가 0인 이유는 무엇인가요?
-// 답:
+// 답:distances가 dailyGoalKm를 넘은 날이 없기 떄문

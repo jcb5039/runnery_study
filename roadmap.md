@@ -1,5 +1,7 @@
 # 16주 학습 순서
 
+모든 주의 하루별 파일과 별도 해설이 준비되어 있습니다. Dart 파일은 각 주 폴더에서, Flutter 파일은 `practice_app/lib`에서 실행하며 주차 안내에 정확한 명령이 있습니다.
+
 한 주는 하루 90분씩 7일 기준입니다. 1~6일에는 아래 과제를 나눠 풀고, 7일에는 같은 개념의 새 예제로 복습합니다. 통과 기준이 안 되면 2~3회 더 연습하고 다음 주로 넘어갑니다. 16주 안에 모든 기능을 혼자 수정하는 것을 보장하는 계획은 아닙니다.
 
 ## 1주 — 실행, 변수, 계산
@@ -18,6 +20,8 @@
 
 ## 3주 — 함수와 실행 순서
 
+- 자료: [하루별 실습과 해설](week03/README.md).
+
 - 먼저 읽기: [함수를 처음 배울 때](guides/functions.md).
 - 1~2일: `main`에서 하던 계산을 함수로 옮기고 직접 호출한다. `print`와 `return`을 구분한다.
 - 3~4일: `metersToKm` 함수를 만든다. `main`에서 1500과 3200을 전달해 1.5와 3.2를 출력한다.
@@ -28,6 +32,8 @@
 
 ## 4주 — List, Map, 함수를 값으로 전달하기
 
+- 자료: [하루별 실습과 해설](week04/README.md).
+
 - 1~2일: 거리 목록 `[2.0, 4.0, 6.0]`의 합과 평균을 반복문으로 구한다.
 - 3일: Map에 이름·거리를 저장하고 키로 값을 꺼낸다. `List<Map<...>>`는 기본 Map을 이해한 다음 본다.
 - 4~5일: 이름 없는 함수와 `where`, `map`, `fold`를 같은 반복문과 비교한다. 한꺼번에 외우지 않는다.
@@ -37,6 +43,8 @@
 
 ## 5주 — 클래스와 객체
 
+- 자료: [하루별 실습과 해설](week05/README.md).
+
 - 개념: 클래스, 객체, 필드, 생성자, `this`, 인스턴스 메서드, `static`, getter, `import`.
 - 과제: `PracticeRun` 클래스를 만들고 거리와 시간을 담은 기록 2개를 만든다. 각 기록의 거리를 출력한다.
 - 확장: getter로 평균 속도를 계산한다. 2km를 1200초에 달리면 시속 6km, 시간이 0이면 0을 돌려주도록 처리한다.
@@ -44,6 +52,8 @@
 - Runnery 연결: `record/models/running_record.dart`에서 생성자와 `distanceKm`, `movingSeconds`만 읽는다.
 
 ## 6주 — 없는 값과 기다리는 작업
+
+- 자료: [하루별 실습과 해설](week06/README.md).
 
 - 1~2일: `null`, `?`, `??`, `?.`를 배운다. 없는 메모에 기본 문구를 표시한다. `!`를 넣기 전에 값이 있는지 확인하는 이유를 설명한다.
 - 3~4일: `Future`, `async`, `await`를 배운다. `Future.delayed`로 기다리는 예제를 만들고 출력 순서를 예측한다.
@@ -54,21 +64,29 @@
 
 ## 7주 — Flutter 화면의 기본 모양
 
+- 자료: [하루별 실습과 해설](week07/README.md).
+
 - 실습용 Flutter 앱은 이 학습 폴더 안의 `practice_app`으로 만든다. Runnery와 별도로 실행한다.
 - 개념: `runApp`, `MaterialApp`, `Scaffold`, `Widget`, `build`, `BuildContext`, `StatelessWidget`, `extends`, `@override`.
 - 과제: `Text`, `Column`, `Row`, `Padding`으로 이름·거리·시간이 보이는 정적인 기록 카드를 만든다.
 - 통과 기준: 어느 위젯이 글자를 그리고 어느 위젯이 배치를 담당하는지 짚는다.
 - Runnery 연결: `main.dart`에서 `runApp`, `MaterialApp`, `home`을 찾는다. 테마 갱신과 애니메이션 코드는 나중에 읽는다.
 
-## 8주 — 버튼과 상태
+## 8주 — 버튼·상태·위젯 생명주기
+
+- 자료: [하루별 실습과 해설](week08/README.md).
 
 - 개념: 콜백, `onPressed`, `StatefulWidget`, `State`, `setState`, `initState`, `dispose`, `mounted`.
 - 과제: 버튼을 누르면 거리가 1씩 증가하는 화면을 만든다. 초기화 버튼도 만든다.
+- 생명주기 실습: 화면 열기 → initState → build → setState 후 build → 뒤로 가기 후 dispose를 로그로 확인한다. await 중 화면에서 나갔을 때 mounted를 확인하고, controller를 dispose에서 정리한다.
+- 함께 읽기: [Flutter 기본 구조](guides/flutter-structure.md), [위젯과 앱 생명주기](guides/flutter-lifecycle.md).
 - 출력 추적: 버튼 클릭 → 콜백 호출 → 값 변경 → 다시 그리는 순서를 적는다.
 - 통과 기준: `onPressed: increase`와 `increase()` 호출의 차이를 설명한다. 어떤 값이 화면의 상태인지 말한다.
 - Runnery 연결: `main_tabs.dart`의 `_go(int index)`를 읽고 `_index`가 어디서 바뀌는지 찾는다.
 
 ## 9주 — 화면 이동과 전달값
+
+- 자료: [하루별 실습과 해설](week09/README.md).
 
 - 개념: `Navigator.push`, `pop`, `pushReplacement`, 생성자로 값 전달, 화면에서 결과 돌려받기.
 - 과제: 기록 목록에서 하나를 누르면 해당 기록의 거리를 보여주는 상세 화면으로 이동한다.
@@ -76,6 +94,8 @@
 - Runnery 연결: `main.dart` → `app_start.dart` → `login/login.dart`의 `AuthGate` → `MainTabs`의 연결을 그린다. 로그인 여부에 따른 분기를 포함한다.
 
 ## 10주 — 실제 기록 모델과 계산 읽기
+
+- 자료: [하루별 실습과 해설](week10/README.md).
 
 - 개념: `DateTime`, `Duration`, 단위 변환, getter, 삼항 연산자, `round`, 간단한 문자열 표시.
 - 과제: 연습용 기록 5km/1800초로 평균 속도 10km/h, 페이스 360초/km를 계산한다.
@@ -85,6 +105,8 @@
 
 ## 11주 — 저장 형식과 기록 목록
 
+- 자료: [하루별 실습과 해설](week11/README.md).
+
 - 개념: Map과 JSON 문자열의 차이, `toJson` / `fromJson`, 파일 읽기·쓰기, `Future<List<...>>`.
 - 과제: 실습용 기록을 JSON 문자열로 바꿨다가 다시 객체로 만들고 거리와 시간이 유지되는지 확인한다.
 - 확장: 실습 앱의 저장 기능을 만들어 재실행 후 기록을 불러온다. 먼저 메모리 목록과 파일 저장의 차이를 설명한다.
@@ -92,6 +114,8 @@
 - 통과 기준: 기록 객체 → Map → JSON 문자열 → 파일, 그리고 반대 과정을 그린다.
 
 ## 12주 — 저장 후 화면이 바뀌는 흐름
+
+- 자료: [하루별 실습과 해설](week12/README.md).
 
 - 개념: `ChangeNotifier`, `addListener`, `removeListener`, `notifyListeners`, `ListenableBuilder`.
 - 과제: 실습 앱에서 기록을 추가하면 목록과 합계가 바뀌게 만든다.
@@ -101,13 +125,18 @@
 
 ## 13주 — GPS 이벤트를 받는 흐름
 
+- 자료: [하루별 실습과 해설](week13/README.md).
+
 - 개념: `Stream`, `listen`, `StreamSubscription`, 구독 취소, `Timer`, 위치 권한, 앱 생명주기.
+- 6일: Flutter의 WidgetsBindingObserver로 앱 상태를 관찰한다. resumed·inactive·hidden·paused를 위젯의 dispose와 구분한다. 플랫폼별 차이와 알림 누락 가능성을 설명한다.
 - 과제: 실제 GPS 대신 일정한 간격으로 숫자를 보내는 작은 Stream 예제로 시작하고, 구독을 종료해 본다.
 - Runnery 연결: `RunningSession`의 `_subscription`, `_ticker`, 위치를 받는 함수, 정리하는 부분을 찾는다.
 - 통과 기준: 한 번 결과를 받는 Future와 여러 번 값을 받는 Stream의 차이를 설명한다.
 - 위치 오차 필터와 백그라운드 문제의 독립적인 수정은 이후 심화 학습 범위다.
 
 ## 14주 — 로그인과 서버의 역할
+
+- 자료: [하루별 실습과 해설](week14/README.md).
 
 - 개념: 인증 상태, 사용자 ID, 요청 성공·실패, 로딩 상태, 화면과 데이터 처리의 역할 구분.
 - 과제: 실습 앱에서 가짜 로그인 함수를 만들어 성공·실패·기다리는 상태를 각각 표시한다.
@@ -117,6 +146,8 @@
 
 ## 15주 — 로컬 저장과 서버 동기화
 
+- 자료: [하루별 실습과 해설](week15/README.md).
+
 - 개념: 폰 안의 기록, 서버의 기록, 나중에 재시도할 작업, 중복 요청과 삭제 처리.
 - 과제: 종이에 ‘오프라인에서 저장 → 온라인 복귀 → 서버 전송’ 순서를 그리고 실패 지점을 표시한다.
 - Runnery 연결: `RunningRecordStore.save` → `RecordSync.recordSaved` → `syncNow`, `_push`, `_pull`의 역할을 읽는다.
@@ -124,6 +155,8 @@
 - 이 주의 목표는 흐름 이해다. 동기화 충돌을 혼자 설계하고 고치는 능력은 추가 연습이 필요하다.
 
 ## 16주 — 한 기능을 처음부터 끝까지 설명하기
+
+- 자료: [하루별 실습과 해설](week16/README.md).
 
 - 시작 전에 Git의 `status`, `diff`, 브랜치와 커밋을 실습 앱에서 연습한다.
 - 기능 하나를 고른다: 기록 거리 표시, 메모 변경, 기록 목록 새로고침 등.

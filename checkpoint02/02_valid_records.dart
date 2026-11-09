@@ -22,11 +22,25 @@
 // restDays: 값이 0인 항목의 개수. 처음에는 0.
 // invalidCount: 음수인 항목의 개수. 처음에는 0.
 
-// [해야 할 일]
-// 1. for-in문으로 rawDistances의 값을 하나씩 확인하고 위 기준으로 분류하세요.
-// 2. validDistances에는 rawDistances에서 발견한 순서대로 값을 추가하세요.
-//    rawDistances 자체는 변경하지 마세요.
-// 3. 반복이 끝난 뒤 네 결과를 아래 순서와 형식으로 출력하세요.
+// [반복문 안에서 할 일 — 여기서는 print를 사용하지 마세요]
+// 1. for-in문으로 rawDistances에서 거리 값을 하나씩 꺼내세요.
+// 2. 이번에 꺼낸 거리 값과 0을 비교해서, 아래 세 경우 중 하나만 실행하세요.
+//    - 0보다 크면: 그 값을 validDistances 끝에 add로 추가하고,
+//                 같은 값을 거리 합계인 totalKm에 더해서 저장하세요.
+//    - 0이면: 쉰 날의 수인 restDays에 1을 더해서 저장하세요.
+//    - 0보다 작으면: 잘못된 기록의 개수인 invalidCount에 1을 더해서 저장하세요.
+// 3. rawDistances의 처음부터 끝까지 같은 방식으로 반복하세요.
+//    rawDistances의 항목을 수정하거나 삭제하지 마세요.
+//    같은 양수가 여러 번 나와도 각각 validDistances에 추가하세요.
+//
+// [반복문이 끝난 뒤 할 일 — print를 사용하세요]
+// 4. 아래 네 줄을 순서대로 출력하세요. 값은 해당 변수에서 가져오세요.
+//    '달린 거리 목록: ' 뒤에는 validDistances 리스트 전체를 출력하세요.
+//    '총 거리: ' 뒤에는 거리 합계인 totalKm과 단위 km를 출력하세요.
+//    '쉰 날: ' 뒤에는 restDays와 단위 일을 출력하세요.
+//    '잘못된 기록: ' 뒤에는 invalidCount와 단위 개를 출력하세요.
+//    validDistances의 항목마다 한 줄씩 출력하는 것이 아니라,
+//    리스트 전체를 한 줄에 출력하므로 최종 출력은 네 줄이에요.
 
 // [기본 입력의 예상 출력]
 // 달린 거리 목록: [3, 5, 4]
@@ -34,7 +48,7 @@
 // 쉰 날: 1일
 // 잘못된 기록: 2개
 
-// [입력값만 바꾸어 추가 확인]
+// [추가 실행 사례 — 입력값을 아래 값으로 바꾸고 실행한 뒤 출력 결과를 비교하세요]
 // A. rawDistances = [0, -3, 0, 2]
 //    달린 거리 목록: [2]
 //    총 거리: 2km
@@ -52,9 +66,37 @@
 // 값 추가 문법이 기억나지 않으면 찾아봐도 돼요.
 
 void main() {
+  var rawDistances = [3, -2, 0, 5, -1, 4];
+  var validDistances = []; //0보다 큼(실제로 달린 거리)
+  var totalKm = 0; //총 달린 거리
+  var restDays = 0; //0인날(쉰날)
+  var invalidCount = 0; //0보다 작은값: 잘못된 기록
+  
+  for(var i in rawDistances) {
+    if(i > 0) {
+      validDistances.add(i);
+      totalKm += i;
+    }
+    else if(i == 0) {
+      restDays += 1;
+    }
+    else {
+      invalidCount += 1;
+    }
+  }
+  print('달린 거리 목록 : $validDistances');
+  print('총 거리: ${totalKm}km');
+  print('쉰 날: $restDays일');
+  print('잘못된 기록: $invalidCount개');
   // TODO: 입력과 결과 변수 선언 → 분류와 계산 → 출력 순서로 작성하세요.
 }
 
+// 달린 거리 목록: [3, 5, 4]
+// 총 거리: 12km
+// 쉰 날: 1일
+// 잘못된 기록: 2개
+
 // [작성 후 설명 — 답을 주석으로 적으세요]
-// rawDistances가 [5, 5, 0]이면 validDistances에 5를 몇 개 넣어야 하나요? 왜인가요?
-// 답:
+// rawDistances가 [5, 5, 0]일 때 totalKm과 validDistances가 각각 어떤 값이
+// 되는지, 왜 그렇게 되는지 적으세요.
+// 답:totalKm = 10, validDistances = 2
