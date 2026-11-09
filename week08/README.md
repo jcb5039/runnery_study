@@ -17,6 +17,8 @@
 
 ### 1. 콜백: 나중에 불러 달라고 함수를 맡기기 — 1일
 
+→ 1일 문제는 이 섹션만 읽고 풀 수 있어요.
+
 ```dart
 class CheerPage extends StatelessWidget {
   const CheerPage({super.key});
@@ -47,7 +49,21 @@ class CheerPage extends StatelessWidget {
 
 **화면과 터미널**: 처음에는 로그가 없어요. **응원**을 누를 때마다 터미널에 `화이팅!`이 한 줄씩 생겨요. → [1일](../practice_app/lib/week08/day01.dart)
 
+**1일 3단계에 필요한 것: 값을 넣어 부르는 콜백**
+
+```dart
+final void Function(int) onTap;
+...
+ElevatedButton(onPressed: () => onTap(1), child: const Text('기록')),
+```
+
+- `void Function(int)`: "int 하나를 받고 돌려주는 값이 없는 함수"라는 **타입**이에요. 함수를 필드에 담을 때 써요. Runnery 원본의 `ValueChanged<int>`도 같은 뜻이에요.
+- `() => onTap(1)`: 이름 없는 함수예요. 버튼이 눌리면 그때 `onTap(1)`을 불러요. `onPressed: onTap(1)`이라고 쓰면 화면을 그리는 순간 바로 불려 버려요.
+- 받는 쪽에서는 `TabButtons(onTap: go)`처럼 `()` 없이 함수 이름을 넘겨요.
+
 ### 2. StatefulWidget, State, setState — 2~3일
+
+→ 2·3일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 ```dart
 class LikePage extends StatefulWidget {
@@ -94,9 +110,26 @@ class _LikePageState extends State<LikePage> {
 
 **화면**: 좋아요 0개 → 버튼 한 번 → 좋아요 1개 → 한 번 더 → 좋아요 2개
 
+**2·3일 3단계에 필요한 것: setState 전에 끝내기, 상태에 따라 고르기**
+
+```dart
+void _go(int index) {
+  if (index == _index) return;
+  setState(() {
+    _index = index;
+  });
+}
+```
+
+- 같은 값이면 `return`으로 끝내서 `setState`를 부르지 않아요. 그러면 `build`도 다시 실행되지 않아요(3주차 4일의 `return`).
+- `onPressed: error != null ? reload : open`: 조건이 참이면 `reload`, 거짓이면 `open`을 맡겨요. `조건 ? A : B`는 10주차에 자세히 배우고, 지금은 "참이면 A, 아니면 B"로 읽어요. 상태가 바뀌어 다시 그려지면 맡기는 함수도 바뀌어요.
+- `Text(error ?? '정상')`: 6주차의 `??`예요. error가 null이면 `'정상'`을 보여줘요.
+
 → [2일](../practice_app/lib/week08/day02.dart), [3일](../practice_app/lib/week08/day03.dart)
 
 ### 3. 위젯 생명주기: initState → build → dispose — 4일, 6일
+
+→ 4·6일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 | 이름 | 누가, 언제 호출하나 | 여기에 넣는 일 |
 | --- | --- | --- |
@@ -127,7 +160,29 @@ void dispose() {
 
 6일의 `late final TextEditingController controller;`에서 `late`는 "선언은 지금 하고, 값은 나중에(`initState`에서) 넣겠다"는 키워드예요. 입력창 도구를 `initState`에서 한 번 만들고, `dispose`에서 `controller.dispose()`로 정리해요. → [4일](../practice_app/lib/week08/day04.dart), [6일](../practice_app/lib/week08/day06.dart)
 
+**4일 3단계에 필요한 것: 새 화면 열기**
+
+```dart
+onPressed: () => Navigator.of(context).push(
+  MaterialPageRoute<void>(builder: (context) => const SettingsLite()),
+),
+```
+
+- 4일 예제의 화면 여는 줄과 같은 모양이에요. `builder`에 넘긴 함수가 새 화면 위젯을 만들어요. 자세한 내용은 9주차에 배워요.
+- 새 화면이 열리면 그 State의 `initState`가, 위쪽 뒤로 가기로 닫히면 `dispose`가 불려요.
+
+**6일 3단계에 필요한 것: 입력 칸 글자를 숫자로**
+
+```dart
+int? get _ageValue => int.tryParse(_age.text.trim());
+```
+
+- `controller.text`: 입력 칸에 지금 들어 있는 글자예요. `trim()`은 양끝 공백을 지워요.
+- `int.tryParse(글자)`: 글자를 정수로 바꿔요. 6주차의 `int.parse`와 달리 실패하면 오류 대신 **null**을 돌려줘요. 그래서 반환 타입이 `int?`예요.
+
 ### 4. 기다린 뒤 mounted 확인하기 — 5일
+
+→ 5일 문제는 이 섹션만 읽고 풀 수 있어요. 7일 복습은 1~4번 섹션을 함께 써요.
 
 State 안의 메서드 하나예요. `message`는 State의 필드예요.
 
@@ -148,6 +203,14 @@ Future<void> load() async {
 - 5일 실습의 `onPressed: loading ? null : load`에서 `조건 ? A : B`는 조건이 참이면 A, 거짓이면 B를 골라요. 버튼에 `null`을 넣으면 누를 수 없는 버튼이 돼요. 이 문법은 10주차에 다시 연습해요.
 
 **화면**: 버튼을 누르면 2초 뒤 `도착`이 보여요. 기다리는 중에 뒤로 가도 오류가 나지 않아요. → [5일](../practice_app/lib/week08/day05.dart)
+
+**5일 3단계에 필요한 것: 화면이 생기자마자 불러오기**
+
+`initState` 안에서 `_reload();`를 부르면 화면이 처음 생길 때 불러오기를 시작해요. `initState`는 `async`로 만들 수 없어서, 기다리는 일은 따로 만든 `async` 함수(`_reload`)에 맡기고 부르기만 해요. Runnery는 `if (!mounted) return;` 대신 `if (mounted) { setState(...) }` 모양으로도 써요. 뜻은 같아요.
+
+**7일 3단계에 필요한 것: State에서 위젯이 받은 값 읽기**
+
+`late int _index = widget.initialIndex;`: State 안에서 `widget.이름`으로 StatefulWidget이 생성자로 받은 값을 읽어요. `late`라서 처음 쓸 때 계산돼요(6일의 `late`와 같은 키워드). 그 뒤로 바뀌는 값은 `_index`이고, `widget.initialIndex`는 그대로예요.
 
 ### 위젯 생명주기와 앱 상태는 달라요
 
@@ -179,13 +242,13 @@ cd ~/src/runnery-study/practice_app
 flutter run -d chrome -t lib/week08/day01.dart
 ```
 
-`showPractice = false`로 예제를 보고, `PracticePage`에 문제를 푼 뒤 `true`로 바꿔요. 저장 후 `R`로 다시 시작해요. 다른 날짜는 `q`로 종료한 뒤 `-t` 경로를 바꿔 실행해요. 해설은 경로에 `answers/`를 넣어 실행해요. 각 파일은 자기 `main()`을 가진 독립 실습이에요.
+`stage = 0`으로 예제를 보고, `Step1Page`부터 차례로 푼 뒤 `stage`를 1, 2, 3으로 바꿔요. 저장 후 `R`로 다시 시작해요. 다른 날짜는 `q`로 종료한 뒤 `-t` 경로를 바꿔 실행해요. 해설은 경로에 `answers/`를 넣어 실행해요. 각 파일은 자기 `main()`을 가진 독립 실습이에요.
 
 ## 푸는 순서
 
 1. 예제의 출력 또는 화면 변화를 먼저 예측하고 실행해요.
 2. 파일의 줄별 설명을 읽고 입력·호출·반환·표시 위치를 찾아요.
-3. TODO 영역에 문제를 직접 풀어요. 예상 결과는 파일 안에 공개되어 있어요.
+3. 먼저 그날 파일 맨 위 "오늘의 강의"에 적힌 README 섹션을 읽어요. 날짜마다 1단계(예제 따라 하기) → 2단계(직접 작성) → 3단계(Runnery 코드 읽기) 문제가 있고, 단계마다 문제 바로 아래에 코드를 쓰는 자리가 있어요. 한 단계의 결과가 예상과 같으면 다음 단계로 넘어가요. Flutter 파일은 `stage` 숫자를 1, 2, 3으로 바꿔 단계 화면을 확인해요.
 4. 입력값이나 조작을 바꾸어 추가 사례도 확인해요.
 5. 정답을 봤다면 닫고 비슷한 입력으로 다시 작성해요. [학습 기록](../notes.md)에 막힌 줄을 적어요.
 

@@ -17,6 +17,8 @@
 
 ### 1. Git: 작업 파일 → 준비 → 기록 — 1일
 
+→ 1일 문제는 이 섹션과 [별도 Git 연습](../guides/git-practice.md)만 읽고 풀 수 있어요. 3단계의 `toStringAsFixed`는 [3주차 6일](../week03/README.md)에서 배웠어요.
+
 Git은 터미널에서 쓰는 도구예요. Dart 코드가 아니에요.
 
 ```text
@@ -44,6 +46,8 @@ Git은 터미널에서 쓰는 도구예요. Dart 코드가 아니에요.
 
 ### 2. 입력값 검사: trim과 isEmpty — 2일
 
+→ 2일 문제는 이 섹션과 아래 3번 섹션의 표를 읽으면 풀 수 있어요.
+
 ```dart
 void main() {
   final typed = '   ';
@@ -67,9 +71,33 @@ true
 [안녕]
 ```
 
+**2일 3단계에 필요한 것: Map 펼치기 `...`**
+
+```dart
+void main() {
+  final base = {'km': 5.0, 'memo': ''};
+  final changed = {...base, 'memo': '비 옴'};
+  print(base);
+  print(changed);
+}
+```
+
+- `...base`: base Map의 키와 값을 **그 자리에 펼쳐 넣어요**. 그 뒤에 같은 키 `'memo'`를 쓰면 뒤에 쓴 값이 덮어써요.
+- 원래 `base`는 바뀌지 않아요. 새 Map이 하나 더 생긴 거예요. Runnery는 이렇게 메모만 다른 **새 기록**을 만들어요.
+- 실습의 `json['km'] as double`은 11주차의 `as`예요.
+
+**예상 출력**
+
+```text
+{km: 5.0, memo: }
+{km: 5.0, memo: 비 옴}
+```
+
 → [2일](../practice_app/lib/week16/day02.dart)
 
 ### 3. 기능 하나를 끝까지 따라가기 — 2~7일
+
+→ 3~7일 문제는 이 섹션과, 각 줄에 적힌 이전 주차 내용으로 풀 수 있어요.
 
 이번 주 Flutter 실습은 아래 표의 칸을 하나씩 채우는 연습이에요. [12주차](../week12/README.md)의 `CupStore` 예제로 먼저 채워 보면 이래요.
 
@@ -87,6 +115,14 @@ true
 - 정상 입력, 빈 입력, 실패, 세 경우를 모두 실행해 보고 예상과 비교해요. `SwitchListTile`은 켜고 끄는 스위치가 달린 목록 한 줄이에요. 성공·실패 입력을 화면에서 바꾸는 데 써요. → [5일](../practice_app/lib/week16/day05.dart)
 - 화면에 들어가서 나올 때까지 `initState` → 저장 → `dispose`를 로그로 따라가요(8주차). → [6일](../practice_app/lib/week16/day06.dart), 7일은 [최종 복습](../practice_app/lib/week16/day07.dart)이에요.
 - 다 채운 표는 [최종 설명 기록](../guides/final-review.md)에 옮겨 적어요.
+
+**3~7일 3단계에 필요한 것**
+
+- 3일: `if (value.length > 20) throw StateError(...)`처럼 저장 함수가 마지막으로 규칙을 확인해요. `length`는 글자 수예요. throw가 `memo = value;`보다 위에 있어서 실패하면 보관된 값이 그대로예요.
+- 4일: 6주차 6일과 같아요. 실패하면 `catch`에서 오류만 바꾸고 목록은 건드리지 않아요.
+- 5일: `SwitchListTile`의 `subtitle`은 제목 아래 작은 설명 글자예요. `onChanged: (v) => setState(() => autoPause = v)`의 `v`는 스위치의 새 값(true/false)이에요. `onChanged`에 null을 넣으면 스위치가 꺼져서(비활성) 누를 수 없어요.
+- 6일: 13주차 5일의 `Timer.periodic`을 State 안에서 `initState`에 켜고 `dispose`에서 `cancel()`해요. `Timer`를 쓰려면 파일 맨 위에 `import 'dart:async';`가 있어야 해요.
+- 7일: `where((r) => r.startedAt.year == now.year && r.startedAt.month == now.month && r.startedAt.day == now.day)`는 연·월·일이 **모두** 같은 기록만 남겨요(`&&`). 그다음 4주차 `fold`로 거리를 더해요.
 
 ### 확인 질문
 
@@ -121,13 +157,13 @@ cd ~/src/runnery-study/practice_app
 flutter run -d chrome -t lib/week16/day02.dart
 ```
 
-`showPractice = false`로 예제를 보고, `PracticePage`에 문제를 푼 뒤 `true`로 바꿔요. 저장 후 `R`로 다시 시작해요. 다른 날짜는 `q`로 종료한 뒤 `-t` 경로를 바꿔 실행해요. 해설은 경로에 `answers/`를 넣어 실행해요. 각 파일은 자기 `main()`을 가진 독립 실습이에요.
+`stage = 0`으로 예제를 보고, `Step1Page`부터 차례로 푼 뒤 `stage`를 1, 2, 3으로 바꿔요. 저장 후 `R`로 다시 시작해요. 다른 날짜는 `q`로 종료한 뒤 `-t` 경로를 바꿔 실행해요. 해설은 경로에 `answers/`를 넣어 실행해요. 각 파일은 자기 `main()`을 가진 독립 실습이에요.
 
 ## 푸는 순서
 
 1. 예제의 출력 또는 화면 변화를 먼저 예측하고 실행해요.
 2. 파일의 줄별 설명을 읽고 입력·호출·반환·표시 위치를 찾아요.
-3. TODO 영역에 문제를 직접 풀어요. 예상 결과는 파일 안에 공개되어 있어요.
+3. 먼저 그날 파일 맨 위 "오늘의 강의"에 적힌 README 섹션을 읽어요. 날짜마다 1단계(예제 따라 하기) → 2단계(직접 작성) → 3단계(Runnery 코드 읽기) 문제가 있고, 단계마다 문제 바로 아래에 코드를 쓰는 자리가 있어요. 한 단계의 결과가 예상과 같으면 다음 단계로 넘어가요. Flutter 파일은 `stage` 숫자를 1, 2, 3으로 바꿔 단계 화면을 확인해요.
 4. 입력값이나 조작을 바꾸어 추가 사례도 확인해요.
 5. 정답을 봤다면 닫고 비슷한 입력으로 다시 작성해요. [학습 기록](../notes.md)에 막힌 줄을 적어요.
 

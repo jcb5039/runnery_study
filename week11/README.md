@@ -22,6 +22,8 @@
 
 ### 1. Map과 JSON 문자열 — 1~2일
 
+→ 1·2일 문제는 이 섹션만 읽고 풀 수 있어요.
+
 ```dart
 import 'dart:convert';
 
@@ -48,9 +50,59 @@ void main() {
 120
 ```
 
+**1일 3단계에 필요한 것: 날짜를 글자로, JSON의 null**
+
+```dart
+import 'dart:convert';
+
+void main() {
+  final meet = DateTime(2025, 3, 9, 14, 5);
+  print(meet.toIso8601String());
+  final Map<String, Object?> plan = {'at': meet.toIso8601String(), 'memo': null};
+  print(jsonEncode(plan));
+}
+```
+
+- `DateTime(2025, 3, 9, 14, 5)`: 연, 월, 일 뒤에 **시, 분**도 넣을 수 있어요.
+- `toIso8601String()`: 날짜를 `2025-03-09T14:05:00.000` 같은 정해진 모양의 글자로 바꿔요. DateTime은 JSON에 그대로 넣을 수 없어서 이렇게 바꿔 저장해요.
+- `Object?`: 값 자리에 null도 넣을 수 있다는 뜻이에요(6주차의 `?`). JSON에서도 `null`은 따옴표 없이 그대로 써요.
+
+**예상 출력**
+
+```text
+2025-03-09T14:05:00.000
+{"at":"2025-03-09T14:05:00.000","memo":null}
+```
+
+**2일 3단계에 필요한 것: `is!`와 DateTime.parse**
+
+```dart
+void main() {
+  Object value = '열';
+  print(value is num);
+  print(value is! num);
+
+  final back = DateTime.parse('2025-03-09T14:05:00.000');
+  print(back.minute);
+}
+```
+
+- `is`: "이 타입인가요?"를 묻는 기호예요. `is!`는 반대로 "이 타입이 **아닌가요**?"예요. `'열'`은 글자라서 `is! num`이 true예요.
+- `DateTime.parse(글자)`: `toIso8601String()`으로 만든 글자를 다시 DateTime 객체로 되돌려요. 그래서 `.minute`처럼 읽을 수 있어요.
+
+**예상 출력**
+
+```text
+false
+true
+5
+```
+
 → [1일](day01.dart)
 
 ### 2. 객체를 저장하고 되살리기: toJson, fromJson — 3일
+
+→ 3일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 ```dart
 import 'dart:convert';
@@ -93,9 +145,48 @@ class Book {
 달리기
 ```
 
+**3일 3단계에 필요한 것: fromJson 안에서 검사하고 throw하기**
+
+```dart
+import 'dart:convert';
+
+void main() {
+  try {
+    print(Ticket.fromJson(jsonDecode('{"kind":"adult"}') as Map<String, dynamic>).kind);
+    print(Ticket.fromJson(jsonDecode('{"kind":"pet"}') as Map<String, dynamic>).kind);
+  } catch (error) {
+    print('모르는 표');
+  }
+}
+
+class Ticket {
+  final String kind;
+  Ticket(this.kind);
+
+  factory Ticket.fromJson(Map<String, dynamic> data) {
+    if (data['kind'] != 'adult') {
+      throw const FormatException('Unknown kind');
+    }
+    return Ticket(data['kind'] as String);
+  }
+}
+```
+
+- factory 생성자 안에서도 값을 먼저 검사할 수 있어요. 모르는 값이면 객체를 만들지 않고 실패를 던져요(6주차 5일).
+- `Ticket.fromJson(...).kind`: 만들어진 객체에 바로 `.kind`를 붙여 읽어요. 실패하면 `.kind`까지 가지 않고 catch로 가요.
+
+**예상 출력**
+
+```text
+adult
+모르는 표
+```
+
 → [3일](day03.dart)
 
 ### 3. 파일 쓰기와 읽기 — 4~5일, 7일
+
+→ 4·5일 문제는 이 섹션만 읽고 풀 수 있어요. 7일 복습은 1~4번 섹션을 함께 써요.
 
 ```dart
 import 'dart:io';
@@ -124,9 +215,131 @@ true
 
 실행이 끝난 뒤에도 `week11/data/concept_example.txt` 파일은 남아 있어요. 프로그램이 끝나면 사라지는 변수와 다른 점이에요. 확인한 뒤에는 이 파일을 지워도 돼요. → [4일](day04.dart), [7일](day07.dart)
 
+**4일 3단계에 필요한 것: `&&`와 await, delete**
+
+```dart
+import 'dart:io';
+
+Future<void> main() async {
+  final file = File('week11/data/concept_note.txt');
+  await file.parent.create(recursive: true);
+  if (await file.exists()) await file.delete();
+  print(await file.exists() && await file.readAsString() == '메모');
+  await file.writeAsString('메모');
+  print(await file.exists() && await file.readAsString() == '메모');
+}
+```
+
+- `delete()`: 파일을 지워요. 매번 같은 상태에서 시작하려고 먼저 지웠어요.
+- `A && B`: "그리고"예요. **둘 다** 참이어야 참이에요. A가 거짓이면 B는 실행하지 않아요. 그래서 파일이 없을 때 `readAsString`을 부르지 않아요.
+- `==`로 읽은 글자와 비교할 수 있어요.
+
+**예상 출력**
+
+```text
+false
+true
+```
+
+**5일 3단계에 필요한 것: 파일 목록 돌기, endsWith, continue**
+
+```dart
+import 'dart:io';
+
+void main() {
+  final files = [File('a.json'), File('b.txt'), File('c.json')];
+  for (final file in files) {
+    if (!file.path.endsWith('.json')) continue;
+    print(file.path);
+  }
+}
+```
+
+- `file.path`: 파일 객체가 가리키는 경로 글자예요. 파일이 실제로 없어도 객체는 만들 수 있어요.
+- `endsWith('.json')`: 글자가 `.json`으로 **끝나면** true예요.
+- `continue`: 반복 안에서 만나면 아래 줄을 건너뛰고 **다음 항목**으로 넘어가요. 반복 자체를 끝내는 `break`와 달라요.
+
+**예상 출력**
+
+```text
+a.json
+c.json
+```
+
+**7일 3단계에 필요한 것: 경로 이어 붙이기, rename, null을 돌려주는 Future**
+
+```dart
+import 'dart:io';
+
+Future<String?> readNote(Directory folder, String name) async {
+  final file = File('${folder.path}/$name.txt');
+  if (!await file.exists()) return null;
+  return file.readAsString();
+}
+
+Future<void> main() async {
+  final folder = await Directory('week11/data/notes').create(recursive: true);
+  final draft = File('${folder.path}/hello.txt.tmp');
+  await draft.writeAsString('안녕');
+  await draft.rename('${folder.path}/hello.txt');
+  print(await readNote(folder, 'hello'));
+  print(await readNote(folder, 'bye'));
+}
+```
+
+- `Directory(...).create(...)`는 만든 폴더 객체를 돌려줘요. 그래서 `await` 결과를 `folder`에 바로 담을 수 있어요.
+- `'${folder.path}/$name.txt'`: 폴더 경로 뒤에 `/`와 파일 이름을 이어 붙여 경로를 만들어요(1주차 보간).
+- `rename(새 경로)`: 파일 이름을 바꿔요. `.tmp`에 다 쓴 뒤 바꾸면 쓰다 만 파일이 진짜 이름으로 남지 않아요.
+- `Future<String?>`: 파일이 없으면 null을 돌려줄 수 있는 약속이에요.
+
+**예상 출력**
+
+```text
+안녕
+null
+```
+
 ### 4. 깨진 내용 읽기 — 6일
 
+→ 6일 문제는 이 섹션만 읽고 풀 수 있어요.
+
 6주차의 `try`/`catch`를 그대로 써요. `jsonDecode('깨진 글자')`처럼 JSON 모양이 아닌 글자를 바꾸면 실패해요. 실패를 빈 목록으로 조용히 바꾸면 사용자는 기록이 사라진 줄 알 수 있어요. 그래서 읽기에 실패했다는 사실을 따로 알려요. → [6일](day06.dart)
+
+**6일 문제에 필요한 것: map 안에서 throw, 결과를 글자로 돌려주기**
+
+```dart
+import 'dart:convert';
+
+String check(String text) {
+  try {
+    final ages = (jsonDecode(text) as List<dynamic>).map((v) {
+      if (v is! int || v < 0) throw const FormatException('bad');
+      return v;
+    }).toList();
+    return '${ages.length}명';
+  } catch (error) {
+    return '읽을 수 없음';
+  }
+}
+
+void main() {
+  print(check('[20, 31]'));
+  print(check('[20, -5]'));
+  print(check('[20,'));
+}
+```
+
+- `map((v) { ... })`: 몸통이 있는 이름 없는 함수예요(4주차 4일). 안에서 이상한 값을 만나면 throw할 수 있어요.
+- JSON 모양이 맞아도(`[20, -5]`) 값이 이상하면 실패할 수 있어요. 모양이 깨진 글자(`[20,`)는 `jsonDecode`에서 바로 실패해요.
+- 둘 다 같은 `catch`가 받아서 실패 문구를 **돌려줘요**. 화면은 이 글자를 받아 보여줄 수 있어요.
+
+**예상 출력**
+
+```text
+2명
+읽을 수 없음
+읽을 수 없음
+```
 
 ### 확인 질문
 
@@ -158,7 +371,7 @@ dart run week11/day01.dart
 
 1. 예제의 출력 또는 화면 변화를 먼저 예측하고 실행해요.
 2. 파일의 줄별 설명을 읽고 입력·호출·반환·표시 위치를 찾아요.
-3. TODO 영역에 문제를 직접 풀어요. 예상 결과는 파일 안에 공개되어 있어요.
+3. 먼저 그날 파일 맨 위 "오늘의 강의"에 적힌 README 섹션을 읽어요. 날짜마다 1단계(예제 따라 하기) → 2단계(직접 작성) → 3단계(Runnery 코드 읽기) 문제가 있고, 단계마다 문제 바로 아래에 코드를 쓰는 자리가 있어요. 한 단계의 결과가 예상과 같으면 다음 단계로 넘어가요.
 4. 입력값이나 조작을 바꾸어 추가 사례도 확인해요.
 5. 정답을 봤다면 닫고 비슷한 입력으로 다시 작성해요. [학습 기록](../notes.md)에 막힌 줄을 적어요.
 

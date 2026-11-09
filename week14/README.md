@@ -15,9 +15,18 @@
 
 ### 1. 로그인 상태를 값으로 표현하기 — 1일
 
+→ 1일 문제는 이 섹션만 읽고 풀 수 있어요.
+
 `String? userId;`처럼 로그인한 사람이 없으면 `null`, 있으면 `'user-7'` 같은 ID로 표현해요(6주차의 `?`). 화면에서는 `userId ?? '손님'`처럼 표시할 수 있어요. 화면에 ID를 넣는 것과, 서버가 "정말 이 사용자가 맞다"고 확인(인증)하는 것은 다른 일이에요. → [1일](../practice_app/lib/week14/day01.dart)
 
+**1일 문제에 필요한 것**
+
+- `setState(() => nickname = '번개')`: `{ }` 대신 `=>`로 쓴 한 줄짜리 setState예요. 안에서 하는 일은 같아요.
+- `bool get isLoggedIn => userId != null;`: userId가 있으면 true인 getter예요(5주차). 따로 저장하지 않고 userId로 계산해요.
+
 ### 2. 화면과 요청을 나누기: 서비스 클래스 — 2일
+
+→ 2일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 Flutter 없이 Dart 콘솔에서 먼저 흐름을 봐요.
 
@@ -65,7 +74,11 @@ class FakeWeather {
 
 `ok: true`로 바꾸면 가운데 줄이 `결과: 맑음`으로 바뀌어요. → [2일](../practice_app/lib/week14/day02.dart)
 
+**2일 3단계에 필요한 것**: 서비스는 기다리기 **전에** 입력을 검사해서 바로 `throw`할 수도 있어요(`if (password.length < 6) throw StateError(...)`). 화면은 같은 `login` 함수를 버튼마다 다른 입력으로 부르고(`() => login('123')`), 성공·실패 문구는 화면의 `try`/`catch`에서 정해요.
+
 ### 3. Flutter 화면에서는 단계마다 화면을 갱신해요 — 3~6일
+
+→ 3·4·5·6일 문제는 이 섹션만 읽고 풀 수 있어요. 7일 복습은 1~3번 섹션과 12주차 ChangeNotifier를 함께 써요.
 
 위 흐름을 State 안의 메서드로 옮기면 단계마다 `setState`가 붙어요.
 
@@ -80,6 +93,13 @@ class FakeWeather {
 - `CircularProgressIndicator`: Flutter가 제공하는, 빙글빙글 도는 로딩 표시예요. → [3일](../practice_app/lib/week14/day03.dart)
 - `mounted` 확인은 요청을 **멈추지 않아요**. 화면이 사라졌으면 결과를 화면에 넣지 않을 뿐이에요. → [6일](../practice_app/lib/week14/day06.dart)
 - 다음 화면으로 갈지는 서비스가 아니라 화면 쪽에서 정해요. 그래서 서비스는 다른 화면에서도 다시 쓸 수 있어요. → [4일](../practice_app/lib/week14/day04.dart), [5일](../practice_app/lib/week14/day05.dart), 7일은 [복습](../practice_app/lib/week14/day07.dart)이에요.
+
+**3~6일 3단계에 필요한 것**
+
+- 3일: `child: loading ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) : const Text('로그인')`처럼 `? :`로 버튼 안의 **위젯 자체**를 고를 수 있어요. SizedBox가 도는 표시의 크기를 정해요.
+- 4일: `if (code == '...') return '...';`를 여러 줄 이어 쓰면 코드마다 다른 문구를 골라요. 어느 것에도 맞지 않으면 마지막 `return`이 쓰여요.
+- 5일: `widget.verified`(8주차 7일)로 위젯이 받은 값을 읽어, `pushReplacement`의 `builder`에서 보여줄 화면을 골라요.
+- 6일: `FutureBuilder`는 `future`가 끝났는지 지켜보다가 끝나면 `builder`를 다시 불러요. `snapshot.connectionState != ConnectionState.done`이면 아직 기다리는 중이에요. `late final Future<void> _loaded = ...;`로 한 번만 만들어서, 다시 그려도 불러오기를 새로 시작하지 않아요.
 
 ### 확인 질문
 
@@ -107,13 +127,13 @@ cd ~/src/runnery-study/practice_app
 flutter run -d chrome -t lib/week14/day01.dart
 ```
 
-`showPractice = false`로 예제를 보고, `PracticePage`에 문제를 푼 뒤 `true`로 바꿔요. 저장 후 `R`로 다시 시작해요. 다른 날짜는 `q`로 종료한 뒤 `-t` 경로를 바꿔 실행해요. 해설은 경로에 `answers/`를 넣어 실행해요. 각 파일은 자기 `main()`을 가진 독립 실습이에요.
+`stage = 0`으로 예제를 보고, `Step1Page`부터 차례로 푼 뒤 `stage`를 1, 2, 3으로 바꿔요. 저장 후 `R`로 다시 시작해요. 다른 날짜는 `q`로 종료한 뒤 `-t` 경로를 바꿔 실행해요. 해설은 경로에 `answers/`를 넣어 실행해요. 각 파일은 자기 `main()`을 가진 독립 실습이에요.
 
 ## 푸는 순서
 
 1. 예제의 출력 또는 화면 변화를 먼저 예측하고 실행해요.
 2. 파일의 줄별 설명을 읽고 입력·호출·반환·표시 위치를 찾아요.
-3. TODO 영역에 문제를 직접 풀어요. 예상 결과는 파일 안에 공개되어 있어요.
+3. 먼저 그날 파일 맨 위 "오늘의 강의"에 적힌 README 섹션을 읽어요. 날짜마다 1단계(예제 따라 하기) → 2단계(직접 작성) → 3단계(Runnery 코드 읽기) 문제가 있고, 단계마다 문제 바로 아래에 코드를 쓰는 자리가 있어요. 한 단계의 결과가 예상과 같으면 다음 단계로 넘어가요. Flutter 파일은 `stage` 숫자를 1, 2, 3으로 바꿔 단계 화면을 확인해요.
 4. 입력값이나 조작을 바꾸어 추가 사례도 확인해요.
 5. 정답을 봤다면 닫고 비슷한 입력으로 다시 작성해요. [학습 기록](../notes.md)에 막힌 줄을 적어요.
 

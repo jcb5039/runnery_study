@@ -16,6 +16,8 @@ Runnery는 기록을 **폰에 먼저 저장하고**, 나중에 **서버로 보�
 
 ### 1. 저장소 두 개는 따로 움직여요 — 1~2일
 
+→ 1·2일 문제는 이 섹션만 읽고 풀 수 있어요.
+
 ```dart
 void main() {
   final phone = <String, String>{};
@@ -43,6 +45,56 @@ void main() {
 보낼 작업: [memo-1]
 ```
 
+**1일 3단계에 필요한 것: 함수가 바깥 Map에 적어 두기**
+
+```dart
+final todo = <String, String>{};
+
+void plan(String day, String job) {
+  todo[day] = job;
+}
+
+void main() {
+  plan('월', '달리기');
+  plan('화', '휴식');
+  plan('월', '수영');
+  print(todo);
+}
+```
+
+- `todo`는 `main` 바깥에 만든 Map이라 여러 함수가 함께 써요.
+- 같은 키 `'월'`에 다시 넣으면 항목이 늘지 않고 **값만 바뀌어요**(4주차 Map). 그래서 마지막 일만 남아요.
+
+**예상 출력**
+
+```text
+{월: 수영, 화: 휴식}
+```
+
+**2일 3단계에 필요한 것: clear와 isEmpty로 문구 고르기**
+
+```dart
+final cart = ['사과', '배'];
+
+String label() => cart.isEmpty ? '비어 있음' : '${cart.length}개 담김';
+
+void main() {
+  print(label());
+  cart.clear();
+  print(label());
+}
+```
+
+- `clear()`: 목록의 항목을 **모두** 지워요. 목록 자체는 남아 있고 비어 있을 뿐이에요.
+- `조건 ? A : B`(10주차 5일)로 비었을 때와 아닐 때 다른 문구를 골라요.
+
+**예상 출력**
+
+```text
+2개 담김
+비어 있음
+```
+
 → [1일](day01.dart), [2일](day02.dart)
 
 ### 2. 성공을 확인한 뒤에만 지우기 — 3일
@@ -55,9 +107,52 @@ void main() {
   └─ 실패(throw) → catch로 이동, 보낼 작업은 그대로 → 나중에 다시 시도
 ```
 
+→ 3일 문제는 이 섹션만 읽고 풀 수 있어요.
+
 먼저 지우고 보냈는데 실패하면, 무엇을 다시 보내야 하는지 잊어버려요. 6주차에서 배운 것처럼 `try` 안에서 `await` **다음 줄**은 성공했을 때만 실행돼요. 이 점을 이용해요. → [3일](day03.dart)
 
+**3일 3단계에 필요한 것: 복사본을 돌며 지우기, 실패하면 반복 전체 멈추기**
+
+```dart
+final boxes = ['A', 'B', 'C'];
+
+Future<void> carry(String box) async {
+  await Future<void>.delayed(const Duration(milliseconds: 20));
+  if (box == 'B') throw StateError('무거움');
+}
+
+Future<void> moveAll() async {
+  for (final box in boxes.toList()) {
+    try {
+      await carry(box);
+      boxes.remove(box);
+    } catch (_) {
+      print('$box에서 멈춤');
+      return;
+    }
+  }
+}
+
+Future<void> main() async {
+  await moveAll();
+  print(boxes);
+}
+```
+
+- `boxes.toList()`: 목록의 **복사본**을 만들어요. 복사본을 돌면서 원본(`boxes`)에서 지우면 반복이 꼬이지 않아요.
+- `catch (_)`: 실패 정보를 쓰지 않을 때 이름 대신 `_`를 써요.
+- `catch` 안의 `return`은 `moveAll` 함수 전체를 끝내요. 그래서 반복도 거기서 멈추고 `C`는 시도하지 않아요.
+
+**예상 출력**
+
+```text
+B에서 멈춤
+[B, C]
+```
+
 ### 3. 같은 키, 지우기, 키와 값 짝 꺼내기 — 4~6일
+
+→ 4·5·6일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 ```dart
 void main() {
@@ -86,7 +181,119 @@ void main() {
 준=90
 ```
 
+**4일 3단계에 필요한 것: 기억한 값과 지금 값 비교하기**
+
+```dart
+final versions = <String, int>{'doc': 1};
+
+void main() {
+  final before = versions['doc'];
+  versions['doc'] = 2;
+  print(versions['doc'] == before);
+  final now = versions['doc'];
+  print(versions['doc'] == now);
+}
+```
+
+- Map에서 꺼낸 값은 `int?`예요. 두 값을 `==`로 비교할 수 있어요.
+- 꺼내 둔 `before`(1)는 Map 값이 바뀌어도 그대로예요. 그래서 "그사이 바뀌었는지" 알 수 있어요.
+
+**예상 출력**
+
+```text
+false
+true
+```
+
+**5일 3단계에 필요한 것: 키 목록을 돌며 종류에 따라 다르게 처리하기**
+
+```dart
+final jobs = {'a': 'add', 'b': 'remove'};
+final shelf = {'b': 1};
+
+void main() {
+  for (final key in jobs.keys.toList()) {
+    if (jobs[key] == 'remove') {
+      shelf.remove(key);
+    } else {
+      shelf[key] = 1;
+    }
+    jobs.remove(key);
+  }
+  print(shelf);
+  print(jobs);
+}
+```
+
+- `jobs.keys`: Map의 **키들**이에요. `.toList()`로 복사해 두면 반복 중에 `jobs`에서 지워도 괜찮아요.
+- `jobs[key]`로 그 키의 값을 꺼내 `if / else`로 갈라요.
+
+**예상 출력**
+
+```text
+{a: 1}
+{}
+```
+
+**6일 3단계에 필요한 것: containsKey, 값이 null일 수 있는 Map**
+
+```dart
+final keep = {'x': true};
+final updates = <String, int?>{'x': 9, 'y': null, 'z': 3};
+final store = {'x': 1, 'y': 2};
+
+void main() {
+  for (final e in updates.entries) {
+    if (keep.containsKey(e.key)) continue;
+    final v = e.value;
+    if (v == null) {
+      store.remove(e.key);
+    } else {
+      store[e.key] = v;
+    }
+  }
+  print(store);
+}
+```
+
+- `containsKey(키)`: Map에 그 **키가 있으면** true예요. List의 `contains`와 비슷해요.
+- `<String, int?>`: 값 자리에 null을 넣을 수 있어요. 여기서는 null을 "지워졌다"는 뜻으로 써요.
+- `final v = e.value;`로 꺼낸 뒤 `v == null`을 확인하면, `else` 안에서는 v를 숫자로 쓸 수 있어요(6주차).
+
+**예상 출력**
+
+```text
+{x: 1, z: 3}
+```
+
 7일의 `List<String>.from(목록)`은 목록의 **복사본**을 만들어요. 목록을 `for-in`으로 돌면서 같은 목록의 항목을 지우면 Dart가 `Concurrent modification during iteration` 오류를 내요. 그래서 복사본을 돌면서 원본에서 지워요. → [7일](day07.dart). 전체 흐름은 [동기화 흐름 정리](../guides/sync-flow.md)의 표에 직접 적어 보세요.
+
+**7일 3단계에 필요한 것: 넣어도 되고 안 넣어도 되는 이름 입력, `&&`의 순서**
+
+```dart
+var lastAt = 0;
+
+String water(int now, {int? gap}) {
+  if (gap != null && now - lastAt < gap) return '아직';
+  lastAt = now;
+  return '물 마심';
+}
+
+void main() {
+  print(water(10, gap: 30));
+  print(water(20));
+}
+```
+
+- `{int? gap}`: `required`가 없는 이름 입력이에요. 넣지 않으면 **null**이에요.
+- `A && B`: A가 거짓이면 B는 보지도 않아요(11주차 4일). gap이 null이면 시간 검사를 하지 않고 넘어가요.
+
+**예상 출력**
+
+```text
+아직
+물 마심
+```
 
 ### 확인 질문
 
@@ -118,7 +325,7 @@ dart run week15/day01.dart
 
 1. 예제의 출력 또는 화면 변화를 먼저 예측하고 실행해요.
 2. 파일의 줄별 설명을 읽고 입력·호출·반환·표시 위치를 찾아요.
-3. TODO 영역에 문제를 직접 풀어요. 예상 결과는 파일 안에 공개되어 있어요.
+3. 먼저 그날 파일 맨 위 "오늘의 강의"에 적힌 README 섹션을 읽어요. 날짜마다 1단계(예제 따라 하기) → 2단계(직접 작성) → 3단계(Runnery 코드 읽기) 문제가 있고, 단계마다 문제 바로 아래에 코드를 쓰는 자리가 있어요. 한 단계의 결과가 예상과 같으면 다음 단계로 넘어가요.
 4. 입력값이나 조작을 바꾸어 추가 사례도 확인해요.
 5. 정답을 봤다면 닫고 비슷한 입력으로 다시 작성해요. [학습 기록](../notes.md)에 막힌 줄을 적어요.
 

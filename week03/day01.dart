@@ -42,10 +42,14 @@ void showExample() {
 
 void step1() {
   print('--- 1단계 ---');
+  showStart();
   // TODO ①: 여기서 showStart()를 호출하세요.
 }
 
 // TODO ②: 여기에 void showStart()를 정의하세요.
+void showStart() {
+  print('출발 준비 완료');
+}
 
 // ━━━━━━━━━━ 2단계: 직접 작성 ━━━━━━━━━━
 // [문제] void showReady()를 정의하고, 함수 안에서 '달릴 준비'를 출력하세요.
@@ -58,7 +62,12 @@ void step1() {
 
 void step2() {
   print('--- 2단계 ---');
+  showReady();
+  showReady();
   // TODO ①: 여기서 showReady()를 두 번 호출하세요.
+}
+void showReady() {
+  print('달릴 준비');
 }
 
 // TODO ②: 여기에 void showReady()를 정의하세요.
@@ -73,7 +82,7 @@ void step2() {
 // (2) step3의 TODO에 두 줄을 그대로 작성하고 실행해서 예측과 비교하세요.
 // (3) 정의는 runRoutine이 coolDown보다 아래에 있는데, 왜 '정리 운동'이 먼저 나오는지 설명하세요.
 // [내 예측]
-//
+//정리운동 달리기
 // [예상 출력]
 // --- 3단계 ---
 // 정리 운동
@@ -98,6 +107,8 @@ void runRoutine() {
 
 void step3() {
   print('--- 3단계 ---');
+  coolDown();
+  runRoutine();
   // TODO ①: 여기서 coolDown()과 runRoutine()을 차례로 호출하세요.
 }
 

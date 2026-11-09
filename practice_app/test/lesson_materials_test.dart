@@ -16,13 +16,13 @@ import 'package:runnery_practice/week16/answers/day05.dart' as memo;
 
 void main() {
   testWidgets('기본 구조의 제목과 본문', (tester) async {
-    await tester.pumpWidget(const MaterialApp(home: structure.PracticePage()));
+    await tester.pumpWidget(const MaterialApp(home: structure.Step2Page()));
     expect(find.text('나의 달리기'), findsOneWidget);
     expect(find.text('오늘 3km'), findsOneWidget);
   });
 
   testWidgets('거리 증가와 초기화', (tester) async {
-    await tester.pumpWidget(const MaterialApp(home: counter.PracticePage()));
+    await tester.pumpWidget(const MaterialApp(home: counter.Step2Page()));
     for (var i = 0; i < 2; i++) {
       await tester.tap(find.text('추가'));
       await tester.pump();
@@ -40,7 +40,7 @@ void main() {
       if (message != null) logs.add(message);
     };
     try {
-      await tester.pumpWidget(const MaterialApp(home: lifecycle.PracticePage()));
+      await tester.pumpWidget(const MaterialApp(home: lifecycle.Step2Page()));
       await tester.tap(find.text('기록 화면 열기'));
       await tester.pumpAndSettle();
       expect(logs.where((line) => line == '기록 initState').length, 1);
@@ -62,7 +62,7 @@ void main() {
   });
 
   testWidgets('await 중 화면 제거 뒤 setState하지 않음', (tester) async {
-    await tester.pumpWidget(const MaterialApp(home: loader.PracticePage()));
+    await tester.pumpWidget(const MaterialApp(home: loader.Step2Page()));
     await tester.tap(find.text('기록 불러오기 화면'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('불러오기'));
@@ -76,7 +76,7 @@ void main() {
   });
 
   testWidgets('화면 결과 전달과 취소', (tester) async {
-    await tester.pumpWidget(const MaterialApp(home: navigation.PracticePage()));
+    await tester.pumpWidget(const MaterialApp(home: navigation.Step2Page()));
     await tester.tap(find.text('거리 선택'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('5km 선택'));
@@ -90,7 +90,7 @@ void main() {
   });
 
   testWidgets('저장 알림 뒤 목록을 다시 읽음', (tester) async {
-    await tester.pumpWidget(const MaterialApp(home: reload.PracticePage()));
+    await tester.pumpWidget(const MaterialApp(home: reload.Step2Page()));
     await tester.pump();
     await tester.tap(find.text('저장'));
     await tester.pump(const Duration(milliseconds: 400));
@@ -101,7 +101,7 @@ void main() {
   });
 
   testWidgets('목록과 합계가 함께 갱신되고 비워짐', (tester) async {
-    await tester.pumpWidget(const MaterialApp(home: records.PracticePage()));
+    await tester.pumpWidget(const MaterialApp(home: records.Step2Page()));
     for (var i = 0; i < 2; i++) {
       await tester.tap(find.text('추가'));
       await tester.pump();
@@ -116,7 +116,7 @@ void main() {
 
   testWidgets('앱 상태를 수신하고 제거 뒤 observer 정리', (tester) async {
     await tester.pumpWidget(
-      const MaterialApp(home: app_lifecycle.PracticePage()),
+      const MaterialApp(home: app_lifecycle.Step2Page()),
     );
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
     await tester.pump();
@@ -132,7 +132,7 @@ void main() {
 
   testWidgets('로그인 실패 뒤 재시도 가능', (tester) async {
     await tester.pumpWidget(
-      const MaterialApp(home: login_failure.PracticePage()),
+      const MaterialApp(home: login_failure.Step2Page()),
     );
     await tester.tap(find.text('로그인'));
     await tester.pump();
@@ -151,7 +151,7 @@ void main() {
 
   testWidgets('로그인 성공 뒤 홈으로 교체', (tester) async {
     await tester.pumpWidget(
-      const MaterialApp(home: login_success.PracticePage()),
+      const MaterialApp(home: login_success.Step2Page()),
     );
     await tester.tap(find.text('로그인'));
     await tester.pump(const Duration(milliseconds: 400));
@@ -161,7 +161,7 @@ void main() {
   });
 
   testWidgets('메모 정상, 빈 입력, 실패 후 기존 값 유지', (tester) async {
-    await tester.pumpWidget(const MaterialApp(home: memo.PracticePage()));
+    await tester.pumpWidget(const MaterialApp(home: memo.Step2Page()));
     await tester.tap(find.text('저장'));
     await tester.pump(const Duration(milliseconds: 400));
     expect(find.text('저장 완료'), findsOneWidget);

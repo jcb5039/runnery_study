@@ -41,7 +41,7 @@ MaterialApp
    └─ body: Center → Text('3km')
 ```
 
-직접 실습: [7주 1일](../practice_app/lib/week07/day01.dart)의 `PracticePage`를 작성해서 제목을 **나의 달리기**, 본문을 **오늘 3km**로 만드세요. 실행 전에 어느 줄이 화면의 어느 부분을 바꿀지 말해보세요.
+직접 실습: [7주 1일](../practice_app/lib/week07/day01.dart)의 2단계 `Step2Page`를 작성해서 제목을 **나의 달리기**, 본문을 **오늘 3km**로 만드세요. 실행 전에 어느 줄이 화면의 어느 부분을 바꿀지 말해보세요.
 
 ## build는 화면의 모양을 반환해요
 

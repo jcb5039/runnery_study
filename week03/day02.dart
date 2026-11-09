@@ -2,6 +2,7 @@
 // 실행 위치: ~/src/runnery-study
 // 실행: dart run week03/day02.dart
 // 정답은 answers/day02.dart에 있어요.
+// 오늘의 강의: week03/README.md의 "2. 입력을 받고 값을 돌려주는 함수 — 2~4일" 섹션이에요. 그 섹션만 읽고 풀 수 있어요.
 // 예제를 실행해 본 뒤 아래로 내려가며 1단계 → 2단계 → 3단계 순서로 풀어요.
 // 단계마다 [문제] 바로 아래에 호출하는 자리(①)와 함수를 만드는 자리(②)가 붙어 있어요. 위로 다시 올라갈 필요 없어요.
 // 한 단계를 저장·실행해서 예상 출력과 같으면 다음 단계로 넘어가요.
@@ -40,9 +41,15 @@ int addOne(int number) {
 void step1() {
   print('--- 1단계 ---');
   // TODO ①: 여기서 addTwo(5)를 호출해 result에 담고 출력하세요.
+  var result = addTwo(5);
+  print(result);
 }
 
 // TODO ②: 여기에 int addTwo(int number)를 정의하세요.
+int addTwo(int number) {
+  return number + 2;
+}
+
 
 // ━━━━━━━━━━ 2단계: 직접 작성 ━━━━━━━━━━
 // [문제] int doubleNumber(int number)를 정의하세요. number의 두 배를 반환하세요.
@@ -55,9 +62,14 @@ void step1() {
 void step2() {
   print('--- 2단계 ---');
   // TODO ①: 여기서 doubleNumber(6)을 호출해 result에 담고 출력하세요.
+  var result = doubleNumber(6);
+  print(result);
 }
 
 // TODO ②: 여기에 int doubleNumber(int number)를 정의하세요.
+int doubleNumber(int number) {
+  return number * 2;
+}
 
 // ━━━━━━━━━━ 3단계: 출력하는 함수와 돌려주는 함수 읽기 ━━━━━━━━━━
 // Runnery의 RunningCalc.hetbahnCount는 계산한 값을 돌려주기만 하고 직접 출력하지 않아요.
@@ -89,6 +101,10 @@ int returnTriple(int n) {
 void step3() {
   print('--- 3단계 ---');
   // TODO ①: 여기서 위 문제 (2)의 네 줄을 작성하세요.
+  printTriple(4);
+  final tripled = returnTriple(4);
+  print(tripled + 1);
+  returnTriple(10);
 }
 
 // [내 말로 설명]

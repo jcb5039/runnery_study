@@ -21,6 +21,8 @@
 
 ### 1. 함수 정의와 호출 — 1일
 
+→ 1일 문제는 이 섹션만 읽고 풀 수 있어요.
+
 ```dart
 void main() {
   print('출발');
@@ -63,9 +65,44 @@ void sayCheer() {
 도착
 ```
 
+**함수 안에서 다른 함수 부르기** (1일 3단계, 7일)
+
+```dart
+void main() {
+  morning();
+  print('출근');
+}
+
+void morning() {
+  wakeUp();
+  print('세수');
+}
+
+void wakeUp() {
+  print('기상');
+}
+```
+
+- `main`이 `morning()`을 부르고, `morning`이 다시 `wakeUp()`을 불러요. 함수 안에서도 다른 함수를 호출할 수 있어요.
+- 어느 함수든 끝(`}`)에 닿으면 **자기를 부른 자리**로 돌아가요. `wakeUp`이 끝나면 `morning`으로, `morning`이 끝나면 `main`으로 돌아가요.
+- 정의가 파일의 위에 있든 아래에 있든 상관없어요. 실행 순서는 **호출한 순서**로 정해져요.
+- 함수 안에서 **자기 자신**을 부르면 끝없이 반복되다가 `Stack Overflow` 오류로 멈춰요. 부르는 함수와 불리는 함수는 따로 만들어요.
+
+**예상 출력**
+
+```text
+기상
+세수
+출근
+```
+
+실습 파일의 `main`에 있는 `step1(); step2(); step3();`도 같은 원리예요. 파일 아래쪽의 단계 함수를 차례로 호출해요.
+
 [1일 실습](day01.dart)의 `showExample`도 `sayCheer`와 같아요. `showExample`은 예제 작성자가 붙인 함수 이름이고, 파일 아래쪽 `void showExample() {`가 정의예요. `main` 안의 `showExample();`은 그 함수를 실행하는 호출이에요.
 
 ### 2. 입력을 받고 값을 돌려주는 함수 — 2~4일
+
+→ 2·3·4일 문제는 이 섹션만 읽고 풀 수 있어요. 날짜별로 필요한 내용은 아래 "2일·3일·4일 문제에 필요한 것"에 따로 정리했어요.
 
 ```dart
 void main() {
@@ -104,7 +141,95 @@ int addKm(int first, int second) {
 - `/`로 나누면 결과가 소수(`double`)가 돼요. `7 / 2`는 `3.5`예요. 그래서 나눗셈 결과를 돌려주는 함수의 반환 타입은 `double`이에요. → [3일 실습](day03.dart)
 - 함수 안에서 `return`을 만나면 그 아래 줄은 실행하지 않고 바로 끝나요. `if`와 함께 쓰면 조건마다 다른 값을 돌려줄 수 있어요. → [4일 실습](day04.dart)
 
+**2일 문제에 필요한 것: 입력은 있고 반환은 없는 함수**
+
+```dart
+void main() {
+  printHalf(10);
+  final half = returnHalf(10);
+  print(half + 1);
+  returnHalf(50);
+}
+
+void printHalf(int n) {
+  print(n ~/ 2);
+}
+
+int returnHalf(int n) {
+  return n ~/ 2;
+}
+```
+
+- `printHalf`는 입력 `n`을 받지만 반환 타입이 `void`예요. 계산한 값을 **화면에 출력만** 하고 돌려주지는 않아요.
+- `returnHalf`는 값을 **돌려주기만** 해요. 그래서 `final half = ...`처럼 받아서 `half + 1` 같은 계산을 더 할 수 있어요.
+- 마지막 줄 `returnHalf(50);`은 25를 돌려받지만 아무도 받아서 출력하지 않아요. 그래서 **화면에는 아무것도 안 나와요**.
+
+**예상 출력**
+
+```text
+5
+6
+```
+
+**3일 문제에 필요한 것: 소수(double) 입력과 출력**
+
+```dart
+void main() {
+  print(litersToCups(1.0));
+  print(litersToCups(0.5));
+}
+
+double litersToCups(double liters) {
+  return liters / 0.25;
+}
+```
+
+- `double liters`: 소수를 입력으로 받아요. `1.0`처럼 소수점이 있는 숫자가 double이에요.
+- double을 나누면 결과도 double이에요. 딱 떨어져도 `4`가 아니라 **`4.0`**으로 출력돼요.
+
+**예상 출력**
+
+```text
+4.0
+2.0
+```
+
+**4일 문제에 필요한 것: `if (조건) return 값;`과 글자를 돌려주는 함수**
+
+```dart
+void main() {
+  print(sizeName(80));
+  print(sizeName(120));
+  print(evenOrOdd(7));
+}
+
+String sizeName(int cm) {
+  if (cm < 100) return '작음';
+  return '큼';
+}
+
+String evenOrOdd(int n) {
+  if (n % 2 == 0) return '짝수';
+  return '홀수';
+}
+```
+
+- `if (조건) return 값;`: 할 일이 `return` 한 줄이면 `{ }` 없이 한 줄로 써도 돼요. 조건이 참이면 거기서 함수가 끝나요.
+- 조건이 거짓이면 다음 줄로 내려가서 아래 `return`이 실행돼요. 두 `return` 중 **하나만** 실행돼요.
+- 반환 타입 `String`: `'작음'` 같은 글자를 돌려줘요.
+- `%`는 1주차에 배운 **나머지**예요. `n % 2 == 0`은 2로 나눈 나머지가 0, 곧 짝수인지 묻는 조건이에요.
+
+**예상 출력**
+
+```text
+작음
+큼
+홀수
+```
+
 ### 3. 이름으로 값을 넘기기 — 5일
+
+→ 5일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 ```dart
 void main() {
@@ -129,9 +254,40 @@ String introduce({required String name, required int age}) {
 두리(31살)
 ```
 
+**5일 3단계에 필요한 것: 입력이 많은 함수**
+
+```dart
+void main() {
+  print(boxVolume(width: 2, height: 3, depth: 4));
+}
+
+double boxVolume({
+  required double width,
+  required double height,
+  required double depth,
+}) {
+  if (width <= 0) return 0;
+  var result = width * height;
+  result = result * depth;
+  return result;
+}
+```
+
+- 입력이 많으면 `({`와 `})` 사이를 한 줄에 하나씩 적어요. 각 줄 끝의 `,`는 그냥 줄을 나누는 쉼표예요.
+- `double` 자리에 `2`처럼 정수를 넣어도 돼요. 함수 안에서는 `2.0`으로 쓰여요. 그래서 결과도 `24.0`이에요.
+- 함수 안에서도 `var`로 변수를 만들고 값을 바꿀 수 있어요. 이 변수는 함수 안에서만 쓸 수 있어요.
+
+**예상 출력**
+
+```text
+24.0
+```
+
 → [5일 실습](day05.dart)
 
 ### 4. 한 줄로 쓰는 함수 `=>` — 6일
+
+→ 6일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 ```dart
 void main() {
@@ -156,7 +312,38 @@ int tripleShort(int number) => number * 3;
 12
 ```
 
+**6일 3단계에 필요한 것: 숫자를 화면용 글자로 바꾸기**
+
+```dart
+void main() {
+  print(priceText(3.14159));
+  print(priceText(2));
+  print(roundText(7.6));
+}
+
+String priceText(double won) => won.toStringAsFixed(1);
+
+String roundText(double n) {
+  return n.round().toString();
+}
+```
+
+- `toStringAsFixed(1)`: 숫자를 **소수 첫째 자리까지 맞춘 글자**로 바꿔요. 괄호 안 숫자가 자릿수예요. `2`는 `'2.0'`, `(2)`로 쓰면 `'2.00'`처럼 0을 채워요.
+- `round()`: 가장 가까운 정수로 **반올림**해요. 7.6은 8이 돼요.
+- `toString()`: 숫자를 **글자(String)**로 바꿔요. 반환 타입이 `String`이라서 마지막에 글자로 바꿔 돌려줘요.
+- `.`으로 이어 쓰면 왼쪽부터 차례로 적용돼요. `n.round().toString()`은 반올림한 다음 글자로 바꿔요.
+
+**예상 출력**
+
+```text
+3.1
+2.0
+8
+```
+
 → [6일 실습](day06.dart), 7일에는 예제 없이 [복습](day07.dart)해요.
+
+**7일 복습**은 1~4번 섹션으로 풀어요. 3단계 `clock`은 1번의 "함수 안에서 다른 함수 부르기"와 4일의 `if (조건) return 값;` 모양이에요. `~/`(몫)와 `%`(나머지)는 1주차에 배웠어요. `125 ~/ 60`은 2, `125 % 60`은 5예요.
 
 ### 확인 질문
 
@@ -203,7 +390,7 @@ dart run week03/day01.dart
 
 1. 예제의 출력 또는 화면 변화를 먼저 예측하고 실행해요.
 2. 파일의 줄별 설명을 읽고 입력·호출·반환·표시 위치를 찾아요.
-3. TODO 영역에 문제를 직접 풀어요. 날짜마다 1단계(예제 따라 하기) → 2단계(직접 작성) → 3단계(Runnery 코드 읽기) 문제가 있고, 단계별 예상 결과가 파일 안에 공개되어 있어요. 한 단계의 출력이 맞으면 다음 단계로 넘어가요.
+3. 먼저 그날 파일 맨 위 "오늘의 강의"에 적힌 README 섹션을 읽어요. 날짜마다 1단계(예제 따라 하기) → 2단계(직접 작성) → 3단계(Runnery 코드 읽기) 문제가 있고, 단계마다 문제 바로 아래에 코드를 쓰는 자리가 있어요. 한 단계의 결과가 예상과 같으면 다음 단계로 넘어가요.
 4. 입력값이나 조작을 바꾸어 추가 사례도 확인해요.
 5. 정답을 봤다면 닫고 비슷한 입력으로 다시 작성해요. [학습 기록](../notes.md)에 막힌 줄을 적어요.
 

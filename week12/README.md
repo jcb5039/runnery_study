@@ -15,6 +15,8 @@
 
 ### 1. 알림을 보내는 저장소: ChangeNotifier — 1일
 
+→ 1일 문제는 1번과 2번 섹션을 함께 읽으면 풀 수 있어요.
+
 ```dart
 class CupStore extends ChangeNotifier {
   int cups = 0;
@@ -31,6 +33,8 @@ class CupStore extends ChangeNotifier {
 - 값을 바꾸는 줄(`cups++`)과 알리는 줄은 따로예요. 알리지 않으면 값만 바뀌고 화면은 그대로예요.
 
 ### 2. 화면에서 듣기: ListenableBuilder — 1일, 3~4일
+
+→ 3·4일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 ```dart
 class _CupPageState extends State<CupPage> {
@@ -75,7 +79,16 @@ class _CupPageState extends State<CupPage> {
 
 4일처럼 저장소에 목록과 getter(5주차)를 두면, 목록을 바꾸고 한 번 알릴 때 목록과 합계가 함께 바뀌어요. → [1일](../practice_app/lib/week12/day01.dart), [3일](../practice_app/lib/week12/day03.dart), [4일](../practice_app/lib/week12/day04.dart)
 
+**1·3·4일 3단계에 필요한 것**
+
+- `builder: (context, _) => Text(...)`: builder의 두 번째 입력(child)을 쓰지 않을 때 `_`로 써요. `=>` 한 줄 함수 모양이에요(3주차 6일).
+- `ElevatedButton(onPressed: () => _session.move(100), ...)`처럼 버튼은 ListenableBuilder **바깥**에 둬도 돼요. 알림이 오면 builder 안의 위젯만 다시 만들어져요.
+- `double get totalKm => runs.fold(0.0, (sum, km) => sum + km);`: 합계를 따로 저장하지 않고 **읽을 때마다** 계산하는 getter예요(4주차 fold, 5주차 getter). 목록을 바꾸고 한 번 알리면 합계도 새 값으로 보여요.
+- 1일 3단계의 `'${s ~/ 60}:${(s % 60).toString().padLeft(2, '0')}'`는 10주차의 초시계 글자 만들기예요.
+
 ### 3. 직접 등록하고 해제하기: addListener, removeListener — 2일, 5~6일
+
+→ 2·5·6일 문제는 이 섹션만 읽고 풀 수 있어요. 7일 복습은 1~3번 섹션을 함께 써요.
 
 2번의 `ListenableBuilder` 대신 State가 직접 등록하는 방법이에요. 이 방법을 쓸 때는 2번의 `dispose`를 아래 것으로 바꾸고, `build`에서는 `ListenableBuilder` 없이 `Text('${store.cups}잔')`를 바로 써요.
 
@@ -109,6 +122,14 @@ void dispose() {
 - 여러 화면이 함께 쓰는 공유 저장소라면, 화면은 자기 리스너만 해제하고 저장소는 `dispose`하지 않아요. **만든 쪽이 정리**해요. → [6일](../practice_app/lib/week12/day06.dart)
 - 5일은 저장 완료 → 알림 → 다시 읽기 → `mounted` 확인 → `setState`를 연결해요. Runnery의 `save → notifyListeners → _reload → setState`와 같은 모양이에요. → [2일](../practice_app/lib/week12/day02.dart), [5일](../practice_app/lib/week12/day05.dart), 7일은 [복습](../practice_app/lib/week12/day07.dart)이에요.
 
+**2·5·6일 3단계에 필요한 것**
+
+- `final sharedRecords = RecordStoreLite();`처럼 클래스 **바깥**에 만든 저장소는 앱 전체가 하나를 함께 써요. 화면이 닫혀도 값이 남아 있어요. 그래서 화면은 `removeListener`만 하고 `dispose`는 하지 않아요(만든 쪽이 정리).
+- `initState`에서 `addListener(_reload);` 다음에 `_reload();`를 한 번 직접 불러요. 알림을 기다리지 않고 처음 화면을 채우려는 거예요(Runnery 홈 화면과 같은 모양).
+- `if (value == memo) return;`이 `notifyListeners()`보다 위에 있으면, 같은 값일 때는 알리지 않아서 화면도 다시 그려지지 않아요(11주차 4일의 "같은 내용이면 쓰지 않기").
+
+**7일 3단계에 필요한 것**: `store.visible.join(', ')`은 목록의 항목을 `', '`로 이어 붙인 **글자 하나**를 만들어요. `['r2', 'r3']`는 `'r2, r3'`가 돼요.
+
 ### 확인 질문
 
 1. `drink()`에서 `notifyListeners();`를 지우면 버튼을 눌렀을 때 `cups` 값과 화면 글자는 각각 어떻게 될까요?
@@ -135,13 +156,13 @@ cd ~/src/runnery-study/practice_app
 flutter run -d chrome -t lib/week12/day01.dart
 ```
 
-`showPractice = false`로 예제를 보고, `PracticePage`에 문제를 푼 뒤 `true`로 바꿔요. 저장 후 `R`로 다시 시작해요. 다른 날짜는 `q`로 종료한 뒤 `-t` 경로를 바꿔 실행해요. 해설은 경로에 `answers/`를 넣어 실행해요. 각 파일은 자기 `main()`을 가진 독립 실습이에요.
+`stage = 0`으로 예제를 보고, `Step1Page`부터 차례로 푼 뒤 `stage`를 1, 2, 3으로 바꿔요. 저장 후 `R`로 다시 시작해요. 다른 날짜는 `q`로 종료한 뒤 `-t` 경로를 바꿔 실행해요. 해설은 경로에 `answers/`를 넣어 실행해요. 각 파일은 자기 `main()`을 가진 독립 실습이에요.
 
 ## 푸는 순서
 
 1. 예제의 출력 또는 화면 변화를 먼저 예측하고 실행해요.
 2. 파일의 줄별 설명을 읽고 입력·호출·반환·표시 위치를 찾아요.
-3. TODO 영역에 문제를 직접 풀어요. 예상 결과는 파일 안에 공개되어 있어요.
+3. 먼저 그날 파일 맨 위 "오늘의 강의"에 적힌 README 섹션을 읽어요. 날짜마다 1단계(예제 따라 하기) → 2단계(직접 작성) → 3단계(Runnery 코드 읽기) 문제가 있고, 단계마다 문제 바로 아래에 코드를 쓰는 자리가 있어요. 한 단계의 결과가 예상과 같으면 다음 단계로 넘어가요. Flutter 파일은 `stage` 숫자를 1, 2, 3으로 바꿔 단계 화면을 확인해요.
 4. 입력값이나 조작을 바꾸어 추가 사례도 확인해요.
 5. 정답을 봤다면 닫고 비슷한 입력으로 다시 작성해요. [학습 기록](../notes.md)에 막힌 줄을 적어요.
 

@@ -15,6 +15,8 @@ Dart가 제공하는 날짜·시간 도구와, 계산 결과를 보기 좋은 �
 
 ### 1. DateTime과 Duration — 1~2일
 
+→ 1·2일 문제는 이 섹션만 읽고 풀 수 있어요.
+
 ```dart
 void main() {
   final trip = DateTime(2025, 3, 9);
@@ -40,9 +42,54 @@ void main() {
 15
 ```
 
+**1일 3단계에 필요한 것: 요일 번호 weekday**
+
+```dart
+void main() {
+  final names = ['월', '화', '수', '목', '금', '토', '일'];
+  final day = DateTime(2025, 3, 9);
+  print(day.weekday);
+  print('${names[day.weekday - 1]}요일');
+}
+```
+
+- `weekday`: 요일을 숫자로 알려줘요. **월요일이 1, 일요일이 7**이에요.
+- 목록의 위치 번호는 0부터라서 `weekday - 1`로 꺼내요(4주차 1일).
+
+**예상 출력**
+
+```text
+7
+일요일
+```
+
+**2일 3단계에 필요한 것: remainder**
+
+```dart
+void main() {
+  final movie = Duration(minutes: 135);
+  print(movie.inMinutes);
+  print(movie.inMinutes.remainder(60));
+  print(movie.inMinutes % 60);
+}
+```
+
+- `remainder(60)`: 60으로 나눈 **나머지**예요. 양수에서는 `% 60`과 같아요. Runnery 코드는 이 모양을 많이 써요.
+- `inMinutes`는 전체 분(135)이에요. 시간을 뺀 나머지 분(15)이 필요하면 `remainder(60)`을 붙여요.
+
+**예상 출력**
+
+```text
+135
+15
+15
+```
+
 → [1일](day01.dart), [2일](day02.dart)
 
 ### 2. 단위 바꾸기와 0으로 나누기 — 3~4일
+
+→ 3·4일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 ```dart
 void main() {
@@ -65,9 +112,67 @@ void main() {
 Infinity
 ```
 
+**3일 문제에 필요한 것: `||`, 밀리초, Duration의 고정값**
+
+```dart
+void main() {
+  final a = 0;
+  final b = 5;
+  print(a <= 0 || b <= 0);
+
+  final walk = Duration(minutes: 15);
+  print(walk.inMilliseconds);
+  print(walk.inMilliseconds / Duration.millisecondsPerHour);
+  print(Duration.zero.inSeconds);
+}
+```
+
+- `||`: "또는"이에요(2주차). 둘 중 **하나라도** 참이면 참이에요. 거리나 시간 중 하나라도 0이면 계산하지 않을 때 써요.
+- `inMilliseconds`: 길이를 밀리초(1/1000초)로 알려줘요. 15분은 900,000밀리초예요.
+- `Duration.millisecondsPerHour`: 1시간의 밀리초(3,600,000)예요. 5주차의 `static const`처럼 클래스 이름으로 바로 읽어요. 이 값으로 나누면 "시간" 단위가 돼요(0.25시간).
+- `Duration.zero`: 0초짜리 길이예요.
+- `a / b / c`는 왼쪽부터 차례로 나눠요. `distance / 1000 / hours`는 먼저 km로 바꾼 뒤 시간으로 나눠요.
+
+**예상 출력**
+
+```text
+true
+900000
+0.25
+0
+```
+
+**4일 3단계에 필요한 것: 계산할 수 없으면 null 돌려주기**
+
+```dart
+const minCount = 3;
+
+double? average(int total, int count) {
+  if (count < minCount) return null;
+  return total / count;
+}
+
+void main() {
+  print(average(30, 5));
+  print(average(30, 2));
+}
+```
+
+- 반환 타입 `double?`: 계산할 수 없을 때 **null**을 돌려줄 수 있어요(6주차). 0을 돌려주면 "평균이 0"인지 "계산 안 함"인지 구분할 수 없어요.
+- `const minCount = 3;`: 함수 바깥에 둔 바뀌지 않는 값이에요. 기준 숫자에 이름을 붙여 두면 읽기 쉬워요.
+
+**예상 출력**
+
+```text
+6.0
+null
+```
+
 → [3일](day03.dart), [4일](day04.dart)
 
 ### 3. 삼항 연산자와 자릿수 채우기 — 5일
+
+→ 5일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 ```dart
 void main() {
@@ -89,9 +194,36 @@ void main() {
 007
 ```
 
+**5일 3단계에 필요한 것: 따옴표가 들어간 글자, `.01`, 고르지 않은 쪽은 실행 안 함**
+
+```dart
+String inch(int n) => "$n\"";
+
+void main() {
+  print("It's 5'");
+  print(inch(3));
+  final size = .5;
+  print(size < .01 || size > 1 ? '범위 밖' : inch(2));
+}
+```
+
+- 글자 안에 `'`를 넣고 싶으면 바깥을 큰따옴표 `" "`로 감싸요. 큰따옴표 안에서 `"`를 쓰려면 앞에 `\`를 붙여 `\"`로 써요.
+- `.5`, `.01`은 `0.5`, `0.01`을 줄여 쓴 모양이에요.
+- `조건 ? A : B`에서 **골라지지 않은 쪽은 실행되지 않아요**. 조건이 참이면 B 자리의 함수는 호출되지 않아요.
+
+**예상 출력**
+
+```text
+It's 5'
+3"
+2"
+```
+
 → [5일](day05.dart)
 
 ### 4. 값이 있으면 쓰고, 없으면 다른 값 — 6일
+
+→ 6일 문제는 이 섹션만 읽고 풀 수 있어요. 7일 복습은 1~4번 섹션을 함께 써요.
 
 ```dart
 void main() {
@@ -116,6 +248,35 @@ void main() {
 ```
 
 → [6일](day06.dart), 7일은 [복습](day07.dart)이에요.
+
+**6일 3단계에 필요한 것: 이름 앞의 `_`, `??`를 계산식 안에 쓰기**
+
+```dart
+class Cup {
+  Cup(this.cups, {this.exactMl});
+
+  final int cups;
+  final int? exactMl;
+
+  double get _liters => (exactMl ?? cups * 200) / 1000;
+  String get label => '${_liters}L';
+}
+
+void main() {
+  print(Cup(3).label);
+  print(Cup(3, exactMl: 750).label);
+}
+```
+
+- `_liters`: 이름이 `_`로 시작하면 **이 파일 안에서만** 쓰는 이름이에요. 다른 파일에서는 보이지 않아요. 그 외에는 보통 getter와 같아요.
+- `(exactMl ?? cups * 200) / 1000`: 괄호 안부터 계산해요. 정밀한 값(`exactMl`)이 있으면 그걸, 없으면 `cups * 200`을 쓴 뒤 1000으로 나눠요.
+
+**예상 출력**
+
+```text
+0.6L
+0.75L
+```
 
 ### 확인 질문
 
@@ -147,7 +308,7 @@ dart run week10/day01.dart
 
 1. 예제의 출력 또는 화면 변화를 먼저 예측하고 실행해요.
 2. 파일의 줄별 설명을 읽고 입력·호출·반환·표시 위치를 찾아요.
-3. TODO 영역에 문제를 직접 풀어요. 예상 결과는 파일 안에 공개되어 있어요.
+3. 먼저 그날 파일 맨 위 "오늘의 강의"에 적힌 README 섹션을 읽어요. 날짜마다 1단계(예제 따라 하기) → 2단계(직접 작성) → 3단계(Runnery 코드 읽기) 문제가 있고, 단계마다 문제 바로 아래에 코드를 쓰는 자리가 있어요. 한 단계의 결과가 예상과 같으면 다음 단계로 넘어가요.
 4. 입력값이나 조작을 바꾸어 추가 사례도 확인해요.
 5. 정답을 봤다면 닫고 비슷한 입력으로 다시 작성해요. [학습 기록](../notes.md)에 막힌 줄을 적어요.
 

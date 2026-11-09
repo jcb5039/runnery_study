@@ -15,6 +15,8 @@
 
 ### 1. List의 위치 번호와 길이 — 1~2일
 
+→ 1·2일 문제는 이 섹션만 읽고 풀 수 있어요. 목록 합계를 `for-in`으로 구하는 방법은 [2주 6일](../week02/day06.dart)에서 배웠어요.
+
 ```dart
 void main() {
   final laps = <double>[1.5, 2.5, 3.0];
@@ -40,7 +42,63 @@ false
 
 평균을 구할 때 빈 목록이면 0으로 나누게 돼요. 그래서 `isEmpty`를 먼저 확인해요. → [1일](day01.dart), [2일](day02.dart)
 
+**1일 문제에 필요한 것: 위치 번호 자리에 계산식 넣기**
+
+```dart
+void main() {
+  final months = ['1월', '2월', '3월'];
+  final month = 2;
+  print(months[month - 1]);
+  print(months[months.length - 1]);
+}
+```
+
+- `[ ]` 안에는 숫자 대신 **계산식**을 써도 돼요. `month - 1`을 먼저 계산해 1이 되고, 1번 칸 `'2월'`을 꺼내요.
+- 사람은 1부터 세고 위치 번호는 0부터 세요. 그래서 "몇 번째"를 위치 번호로 바꿀 때 1을 빼요.
+- `months.length - 1`은 항상 **마지막 칸**의 번호예요.
+- 없는 칸(여기서는 `months[3]`)을 꺼내면 `RangeError` 오류가 나요.
+
+**예상 출력**
+
+```text
+2월
+3월
+```
+
+**2일 문제에 필요한 것: 목록을 함수에 넘기기, 가장 작은 값 찾기**
+
+```dart
+void main() {
+  print(smallest([7, 3, 9]));
+  print(smallest([]));
+}
+
+int smallest(List<int> numbers) {
+  if (numbers.isEmpty) return 0;
+  var low = numbers[0];
+  for (final n in numbers) {
+    if (n < low) {
+      low = n;
+    }
+  }
+  return low;
+}
+```
+
+- `List<int> numbers`: 함수 입력으로 목록을 통째로 받아요. 호출할 때 `[7, 3, 9]`처럼 목록을 바로 넣어도 돼요. `[]`는 **빈 목록**이에요.
+- 빈 목록에는 0번 칸이 없어서 `numbers[0]`이 오류가 나요. 그래서 `isEmpty`를 **먼저** 확인하고 바로 `return`해요.
+- `low`를 0번 칸 값으로 시작하고, 더 작은 값을 만날 때마다 바꿔요. 반복이 끝나면 `low`에 가장 작은 값이 남아요. 가장 큰 값은 `<`를 `>`로 바꾸면 돼요.
+
+**예상 출력**
+
+```text
+3
+0
+```
+
 ### 2. Map: 이름표로 값 찾기 — 3일, 7일
+
+→ 3일 문제는 이 섹션만 읽고 풀 수 있어요. 7일 복습은 1~4번 섹션을 함께 써요.
 
 ```dart
 void main() {
@@ -66,9 +124,67 @@ void main() {
 null
 ```
 
-→ [3일](day03.dart). 7일에는 Map 여러 개를 List에 담은 `List<Map<String, String>>`을 다뤄요. 바깥은 목록이고 각 칸은 Map이에요. → [7일](day07.dart)
+**3일 문제에 필요한 것: 여러 종류의 값 담기, Map을 돌려주는 함수**
+
+```dart
+void main() {
+  final pet = <String, Object>{'name': '콩이', 'age': 3};
+  print(pet['age']);
+
+  final info = makeInfo('보리', 5);
+  print(info['name']);
+  print(info['color']);
+}
+
+Map<String, Object> makeInfo(String name, int age) {
+  return {'name': name, 'age': age};
+}
+```
+
+- `<String, Object>`: 값 자리에 `Object`를 쓰면 글자와 숫자처럼 **서로 다른 종류**를 한 Map에 담을 수 있어요. Runnery 원본에 보이는 `dynamic`도 지금은 같은 뜻으로 읽어요.
+- `Map<String, Object> makeInfo(...)`: Map을 **돌려주는 함수**예요. 반환 타입 자리에 Map 타입을 써요.
+- 돌려받은 Map에도 `['name']`처럼 이름표로 꺼내요. 넣지 않은 `'color'`는 `null`이에요.
+
+**예상 출력**
+
+```text
+3
+보리
+null
+```
+
+→ [3일](day03.dart)
+
+**7일 복습에 필요한 것: Map 여러 개를 담은 List**
+
+```dart
+void main() {
+  final pets = <Map<String, String>>[
+    {'name': '콩이', 'kind': '개'},
+    {'name': '나비', 'kind': '고양이'},
+  ];
+  print(pets[1]['name']);
+  print(pets.where((p) => p['kind'] == '개').toList());
+}
+```
+
+- `<Map<String, String>>[...]`: 바깥은 목록이고 **각 칸은 Map**이에요.
+- `pets[1]['name']`: 먼저 `[1]`로 1번 칸의 Map을 꺼내고, 그 Map에서 `['name']`을 꺼내요. 왼쪽부터 차례로 읽어요.
+- `where`(3번 섹션)에 넘긴 함수의 `p`에는 **Map 하나가 통째로** 들어와요. `p['kind']`로 그 Map의 값을 꺼내 비교해요.
+- Map을 출력하면 `{name: 콩이, kind: 개}`처럼 따옴표 없이 보여요.
+
+**예상 출력**
+
+```text
+나비
+[{name: 콩이, kind: 개}]
+```
+
+→ [7일](day07.dart)
 
 ### 3. 이름 없는 함수를 넘겨서 거르기: where — 4일
+
+→ 4일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 3주차의 함수는 모두 이름이 있었어요. 이번에는 **이름 없이 그 자리에서 만든 함수**를 다른 함수에 넘겨요.
 
@@ -105,9 +221,42 @@ void main() {
 [25, 30]
 ```
 
+**4일 문제에 필요한 것: 몸통이 있는 이름 없는 함수, contains와 !**
+
+```dart
+void main() {
+  final fruits = ['사과', '배', '감'];
+  final picked = fruits.where((f) {
+    return f != '배';
+  }).toList();
+  print(picked);
+
+  final sold = ['감'];
+  print(sold.contains('감'));
+  print(!sold.contains('감'));
+  print(fruits.where((f) => !sold.contains(f)).toList());
+}
+```
+
+- `(f) { return ...; }`: 이름 없는 함수도 3주차 함수처럼 `{ }`와 `return`으로 쓸 수 있어요. `(f) => ...`와 같은 뜻이에요.
+- `sold.contains('감')`: 목록에 그 값이 **있으면 `true`**예요. List가 원래 가진 기능이에요.
+- `!`: `true`와 `false`를 **뒤집어요**. `!sold.contains(f)`는 "sold에 없으면 true"예요.
+- 마지막 줄은 팔린 것(`sold`)에 **없는** 과일만 남겨요.
+
+**예상 출력**
+
+```text
+[사과, 감]
+true
+false
+[사과, 배]
+```
+
 → [4일](day04.dart)
 
 ### 4. 바꾸기 map, 하나로 모으기 fold — 5~6일
+
+→ 5·6일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 ```dart
 void main() {
@@ -127,6 +276,46 @@ void main() {
 ```text
 [2000, 5000]
 3500
+```
+
+**5일 문제에 필요한 것: fold 결과에 이어서 계산하기**
+
+```dart
+void main() {
+  final weights = [1.4, 2.3];
+  print(weights.fold<double>(0, (sum, w) => sum + w).round());
+  final counts = [3, 4];
+  print(counts.fold<int>(10, (sum, c) => sum + c));
+}
+```
+
+- `fold(...)`가 돌려준 값 뒤에 바로 `.round()`를 붙이면 **다 모은 뒤** 반올림해요(3주차 6일). 1.4 + 2.3 = 3.7 → 4예요.
+- 처음 값은 꼭 0이 아니어도 돼요. `10`에서 시작하면 10 + 3 + 4 = 17이에요.
+- 정수 목록을 모을 때는 `fold<int>`, 소수는 `fold<double>`을 써요.
+
+**예상 출력**
+
+```text
+4
+17
+```
+
+**6일 문제에 필요한 것: map으로 숫자를 글자로 바꾸기**
+
+```dart
+void main() {
+  final cms = [150, 0, 172];
+  print(cms.where((c) => c > 0).map((c) => '${c}cm').toList());
+}
+```
+
+- `map`에 넘긴 함수가 **글자**를 돌려주면 결과도 글자 목록이 돼요. `'${c}cm'`는 1주차 문자열 보간이에요.
+- 먼저 `where`로 0을 빼고, 남은 값만 `map`으로 바꿔요. 순서를 바꾸면 `'0cm'`도 남아요.
+
+**예상 출력**
+
+```text
+[150cm, 172cm]
 ```
 
 → [5일](day05.dart), [6일](day06.dart)
@@ -161,7 +350,7 @@ dart run week04/day01.dart
 
 1. 예제의 출력 또는 화면 변화를 먼저 예측하고 실행해요.
 2. 파일의 줄별 설명을 읽고 입력·호출·반환·표시 위치를 찾아요.
-3. TODO 영역에 문제를 직접 풀어요. 예상 결과는 파일 안에 공개되어 있어요.
+3. 먼저 그날 파일 맨 위 "오늘의 강의"에 적힌 README 섹션을 읽어요. 날짜마다 1단계(예제 따라 하기) → 2단계(직접 작성) → 3단계(Runnery 코드 읽기) 문제가 있고, 단계마다 문제 바로 아래에 코드를 쓰는 자리가 있어요. 한 단계의 결과가 예상과 같으면 다음 단계로 넘어가요.
 4. 입력값이나 조작을 바꾸어 추가 사례도 확인해요.
 5. 정답을 봤다면 닫고 비슷한 입력으로 다시 작성해요. [학습 기록](../notes.md)에 막힌 줄을 적어요.
 

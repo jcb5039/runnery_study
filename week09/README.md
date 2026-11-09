@@ -14,6 +14,8 @@
 
 ### 1. 화면 쌓기: push와 pop — 1일
 
+→ 1일 문제는 이 섹션만 읽고 풀 수 있어요.
+
 Flutter는 열린 화면을 **접시처럼 위로 쌓아요**. 맨 위 접시가 지금 보이는 화면이에요.
 
 ```dart
@@ -41,7 +43,22 @@ ElevatedButton(
 
 **화면**: 도움말을 누르면 HelpPage가 위에 보여요. 뒤로 가기를 누르면 원래 화면이 그대로 있어요. → [1일](../practice_app/lib/week09/day01.dart)
 
+**1일 3단계에 필요한 것: 화면 여는 일을 함수 하나로**
+
+```dart
+void openPage(BuildContext context, String title) {
+  Navigator.of(context).push(
+    MaterialPageRoute<void>(builder: (_) => TitlePage(title: title)),
+  );
+}
+```
+
+- 클래스 바깥 함수도 `context`를 입력으로 받으면 화면을 열 수 있어요. 버튼에서는 `onPressed: () => openPage(context, '기록')`처럼 불러요.
+- `(_)`: `builder`가 넘겨주는 입력을 쓰지 않을 때 이름 대신 `_`를 써요.
+
 ### 2. 생성자로 값 넘기기 — 2~3일, 6일
+
+→ 2·3·6일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 ```dart
 class ScorePage extends StatelessWidget {
@@ -68,7 +85,27 @@ class ScorePage extends StatelessWidget {
 
 **화면**: 새 화면 제목은 "점수", 가운데에는 "90점"이 보여요. → [2일](../practice_app/lib/week09/day02.dart)
 
+**3일 3단계에 필요한 것: 목록 개수만큼 위젯 만들기**
+
+```dart
+ListView(
+  children: [
+    for (final r in records)
+      ListTile(title: Text('${r.km}km')),
+  ],
+)
+```
+
+- `[ ]` 안에 `for`를 쓰면 records의 항목마다 `ListTile`이 하나씩 들어가요. 2주차 for-in과 같은 생각인데, 목록을 만드는 자리에 쓴 모양이에요.
+- 반복마다 `r`이 다르니까, 각 줄의 `onTap`에서 넘기는 `r`도 그 줄의 객체예요.
+
+**6일 3단계에 필요한 것: 넘겨받은 객체의 getter 읽기**
+
+상세 화면은 `record.distanceKm`처럼 필드를, `record.paceLabel`처럼 getter를 읽어요(5주차 4일). `paceLabel` 안의 `padLeft(2, '0')`는 숫자를 두 자리로 채우는 기능이에요(10주차에 배워요). 지금은 "5를 05로 만든다"로 읽어요.
+
 ### 3. 닫으면서 값 돌려받기 — 4일
+
+→ 4일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 State 안의 메서드예요. `message`는 State의 필드예요.
 
@@ -93,7 +130,14 @@ Future<void> pickFruit() async {
 
 **화면**: 사과 버튼으로 닫으면 원래 화면에 `사과`가, 뒤로 가기로 닫으면 `선택 안 함`이 보여요. → [4일](../practice_app/lib/week09/day04.dart)
 
+**4일 문제에 필요한 것: 돌려받은 값이 없을 때**
+
+- `weather = result ?? '모름';`: 6주차의 `??`예요. 뒤로 가기로 닫아서 result가 null이면 `'모름'`을 넣어요.
+- `if (result == null || !mounted) return;`: 취소했거나(`null`) 화면이 사라졌으면(`!mounted`) 바로 끝내요. `||`는 둘 중 하나만 참이어도 참이에요.
+
 ### 4. 맨 위 화면 바꾸기: pushReplacement — 5일
+
+→ 5일 문제는 이 섹션만 읽고 풀 수 있어요. 7일 복습은 1~4번 섹션을 함께 써요.
 
 ```dart
 Navigator.of(context).pushReplacement(
@@ -111,6 +155,23 @@ push 뒤         pushReplacement 뒤
 ```
 
 **화면**: MainPage로 바뀌고, AppBar에 뒤로 가기 버튼이 없어요. → [5일](../practice_app/lib/week09/day05.dart), 7일은 [복습](../practice_app/lib/week09/day07.dart)이에요.
+
+**5일 3단계에 필요한 것: 화면이 생기고 잠시 뒤 스스로 교체하기**
+
+`initState`에서 `_openNextPage();`를 부르면, 기다린 뒤 `if (!mounted) return;`을 확인하고 `pushReplacement`로 자기 자신을 다음 화면으로 바꿔요(8주차 5일과 같은 순서). Runnery 원본의 `PageRouteBuilder`는 넘어가는 애니메이션을 직접 정하는 도구예요. 지금은 `MaterialPageRoute`와 같은 역할로 읽어요.
+
+**7일 3단계에 필요한 것: build에서 화면 고르기**
+
+```dart
+Widget build(BuildContext context) {
+  if (loggedIn) {
+    return const Scaffold(body: Center(child: Text('메인 탭')));
+  }
+  return const Scaffold(body: Center(child: Text('로그인 화면')));
+}
+```
+
+화면을 push하지 않고, `build`가 `if`로 둘 중 **하나를 골라 돌려줘요**. 3주차 4일의 `if (조건) return ...;` 모양을 위젯에 쓴 거예요.
 
 ### 확인 질문
 
@@ -138,13 +199,13 @@ cd ~/src/runnery-study/practice_app
 flutter run -d chrome -t lib/week09/day01.dart
 ```
 
-`showPractice = false`로 예제를 보고, `PracticePage`에 문제를 푼 뒤 `true`로 바꿔요. 저장 후 `R`로 다시 시작해요. 다른 날짜는 `q`로 종료한 뒤 `-t` 경로를 바꿔 실행해요. 해설은 경로에 `answers/`를 넣어 실행해요. 각 파일은 자기 `main()`을 가진 독립 실습이에요.
+`stage = 0`으로 예제를 보고, `Step1Page`부터 차례로 푼 뒤 `stage`를 1, 2, 3으로 바꿔요. 저장 후 `R`로 다시 시작해요. 다른 날짜는 `q`로 종료한 뒤 `-t` 경로를 바꿔 실행해요. 해설은 경로에 `answers/`를 넣어 실행해요. 각 파일은 자기 `main()`을 가진 독립 실습이에요.
 
 ## 푸는 순서
 
 1. 예제의 출력 또는 화면 변화를 먼저 예측하고 실행해요.
 2. 파일의 줄별 설명을 읽고 입력·호출·반환·표시 위치를 찾아요.
-3. TODO 영역에 문제를 직접 풀어요. 예상 결과는 파일 안에 공개되어 있어요.
+3. 먼저 그날 파일 맨 위 "오늘의 강의"에 적힌 README 섹션을 읽어요. 날짜마다 1단계(예제 따라 하기) → 2단계(직접 작성) → 3단계(Runnery 코드 읽기) 문제가 있고, 단계마다 문제 바로 아래에 코드를 쓰는 자리가 있어요. 한 단계의 결과가 예상과 같으면 다음 단계로 넘어가요. Flutter 파일은 `stage` 숫자를 1, 2, 3으로 바꿔 단계 화면을 확인해요.
 4. 입력값이나 조작을 바꾸어 추가 사례도 확인해요.
 5. 정답을 봤다면 닫고 비슷한 입력으로 다시 작성해요. [학습 기록](../notes.md)에 막힌 줄을 적어요.
 

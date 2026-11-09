@@ -9,7 +9,7 @@ cd ~/src/runnery-study/practice_app
 flutter run -d chrome -t lib/week08/day04.dart
 ```
 
-`showPractice = false`로 실행한 뒤 **생명주기 보기 → 다시 그리기 → 화면 위쪽 뒤로 가기** 순서로 눌러보세요. 로그는 이 명령을 실행한 터미널에서 보여요.
+`stage = 0`으로 실행한 뒤 **생명주기 보기 → 다시 그리기 → 화면 위쪽 뒤로 가기** 순서로 눌러보세요. 로그는 이 명령을 실행한 터미널에서 보여요.
 
 ```text
 새 화면 열기        예제 initState → 예제 build
@@ -29,7 +29,7 @@ flutter run -d chrome -t lib/week08/day04.dart
 5. State가 영구적으로 제거될 때 `dispose()`에서 사용하던 도구와 구독을 정리해요. 마지막에 `super.dispose()`를 호출해요.
 6. 새로 열면 새로운 State라서 초기값부터 다시 시작해요.
 
-직접 실습: 같은 파일의 `PracticePage`에서 기록 화면을 열게 하고, `PracticeCounter`를 만들어 **기록 initState / 기록 build / 기록 dispose** 로그를 남기세요. 버튼을 눌렀을 때 추가될 로그를 먼저 예측하세요.
+직접 실습: 같은 파일의 2단계 `Step2Page`에서 기록 화면을 열게 하고, `PracticeCounter`를 만들어 **기록 initState / 기록 build / 기록 dispose** 로그를 남기세요. 버튼을 눌렀을 때 추가될 로그를 먼저 예측하세요.
 
 이 설명은 [Flutter State 공식 생명주기](https://api.flutter.dev/flutter/widgets/State-class.html)의 기본 흐름을 처음 배울 부분으로 줄인 것이에요.
 
@@ -91,7 +91,7 @@ flutter run -d chrome -t lib/week13/day06.dart
 3. `didChangeAppLifecycleState(state)`: 새 상태를 받아 로그와 Text를 바꿔요.
 4. `dispose`의 `removeObserver(this)`: 등록을 해제해요.
 
-비슷한 실습: `PracticePage`에서 같은 흐름을 작성하고 실제로 받은 상태를 기록하세요. **앱이 inactive가 된 것과 State가 dispose된 것은 같은 사건인가요?**
+비슷한 실습: 13주 6일 2단계 `Step2Page`에서 같은 흐름을 작성하고 실제로 받은 상태를 기록하세요. **앱이 inactive가 된 것과 State가 dispose된 것은 같은 사건인가요?**
 
 ## 나중에 원본에서 만날 이름
 

@@ -11,6 +11,8 @@
 
 ### 1. 앱의 시작: main → runApp → 첫 화면 — 1~2일
 
+→ 1·2일 문제는 이 섹션만 읽고 풀 수 있어요.
+
 ```dart
 import 'package:flutter/material.dart';
 
@@ -58,9 +60,29 @@ class HelloPage extends StatelessWidget {
 
 **화면**: 흰 화면 가운데에 **안녕, Flutter**가 보여요.
 
-실습 파일의 `home: showPractice ? const PracticePage() : const ExamplePage()`는 "showPractice가 true면 PracticePage, 아니면 ExamplePage"라는 뜻이에요. 예제와 문제 화면을 바꿔 보여주는 스위치예요. → [1일](../practice_app/lib/week07/day01.dart), [2일](../practice_app/lib/week07/day02.dart)
+실습 파일의 `main`은 이렇게 생겼어요.
+
+```dart
+int stage = 0;
+
+void main() {
+  const pages = <Widget>[ExamplePage(), Step1Page(), Step2Page(), Step3Page()];
+  runApp(MaterialApp(home: pages[stage]));
+}
+```
+
+- `pages`는 화면 위젯 네 개를 담은 List예요. `pages[stage]`는 4주차에 배운 **위치 번호로 꺼내기**예요. `stage`가 0이면 예제, 1이면 1단계 화면이 `home`이 돼요.
+- 한 단계를 풀면 `stage` 숫자만 바꾸고 저장한 뒤 터미널에서 `R`을 눌러요.
+
+**1일 3단계에 필요한 것: build가 다른 위젯을 그대로 돌려주기**
+
+`build`는 꼭 `Scaffold`를 돌려줄 필요가 없어요. `return const AppStartLite();`처럼 **다른 위젯 하나를 그대로** 돌려주면, 그 위젯의 `build`가 그린 화면이 보여요. Runnery의 `home: const AppStartPage()`도 이렇게 다른 클래스에 화면을 맡긴 거예요.
+
+→ [1일](../practice_app/lib/week07/day01.dart), [2일](../practice_app/lib/week07/day02.dart)
 
 ### 2. 위젯 안에 위젯 넣기: child와 children — 3~5일
+
+→ 3·4·5일 문제는 이 섹션만 읽고 풀 수 있어요.
 
 ```dart
 body: Padding(
@@ -96,9 +118,21 @@ Padding
 
 **화면**: 위쪽에 "오늘의 할 일", 그 아래 한 줄에 "물 마시기"와 "스트레칭"이 간격을 두고 나란히 보여요.
 
+**3·4일 3단계에 필요한 것: 글자 꾸미기와 따옴표**
+
+```dart
+const Text('5.24', style: TextStyle(fontSize: 32))
+const Text("6'09\"")
+```
+
+- `style: TextStyle(fontSize: 32)`: 글자 크기를 32로 키우는 꾸밈이에요. 보이는 글자(값)는 바뀌지 않아요.
+- 글자 안에 `'`가 있으면 바깥을 `" "`로 감싸요. `"` 자체를 넣으려면 앞에 `\`를 붙여요. 화면에는 `6'09"`로 보여요.
+
 → [3일 Column](../practice_app/lib/week07/day03.dart), [4일 Row](../practice_app/lib/week07/day04.dart), [5일 Padding과 Card](../practice_app/lib/week07/day05.dart)
 
 ### 3. 내 위젯을 만들고 값 넘기기 — 6~7일
+
+→ 6·7일 문제는 이 섹션만 읽고 풀 수 있어요. 7일 복습은 1~3번 섹션을 함께 써요.
 
 ```dart
 class NoteCard extends StatelessWidget {
@@ -151,13 +185,13 @@ cd ~/src/runnery-study/practice_app
 flutter run -d chrome -t lib/week07/day01.dart
 ```
 
-`showPractice = false`로 예제를 보고, `PracticePage`에 문제를 푼 뒤 `true`로 바꿔요. 저장 후 `R`로 다시 시작해요. 다른 날짜는 `q`로 종료한 뒤 `-t` 경로를 바꿔 실행해요. 해설은 경로에 `answers/`를 넣어 실행해요. 각 파일은 자기 `main()`을 가진 독립 실습이에요.
+`stage = 0`으로 예제를 보고, `Step1Page`부터 차례로 푼 뒤 `stage`를 1, 2, 3으로 바꿔요. 저장 후 `R`로 다시 시작해요. 다른 날짜는 `q`로 종료한 뒤 `-t` 경로를 바꿔 실행해요. 해설은 경로에 `answers/`를 넣어 실행해요. 각 파일은 자기 `main()`을 가진 독립 실습이에요.
 
 ## 푸는 순서
 
 1. 예제의 출력 또는 화면 변화를 먼저 예측하고 실행해요.
 2. 파일의 줄별 설명을 읽고 입력·호출·반환·표시 위치를 찾아요.
-3. TODO 영역에 문제를 직접 풀어요. 예상 결과는 파일 안에 공개되어 있어요.
+3. 먼저 그날 파일 맨 위 "오늘의 강의"에 적힌 README 섹션을 읽어요. 날짜마다 1단계(예제 따라 하기) → 2단계(직접 작성) → 3단계(Runnery 코드 읽기) 문제가 있고, 단계마다 문제 바로 아래에 코드를 쓰는 자리가 있어요. 한 단계의 결과가 예상과 같으면 다음 단계로 넘어가요. Flutter 파일은 `stage` 숫자를 1, 2, 3으로 바꿔 단계 화면을 확인해요.
 4. 입력값이나 조작을 바꾸어 추가 사례도 확인해요.
 5. 정답을 봤다면 닫고 비슷한 입력으로 다시 작성해요. [학습 기록](../notes.md)에 막힌 줄을 적어요.
 
