@@ -42,9 +42,15 @@ int exampleRemaining(int goal, int done) {
 void step1() {
   print('--- 1단계 ---');
   // TODO ①: 여기서 두 호출을 각각 print 안에 넣으세요.
+  print(biggerKm(3, 7));
+  print(biggerKm(9, 2));
 }
 
 // TODO ②: 여기에 int biggerKm(int a, int b)를 정의하세요.
+int biggerKm(int a, int b) {
+  if(a >= b) return a;
+  return b;
+}
 
 // ━━━━━━━━━━ 2단계: 직접 작성 ━━━━━━━━━━
 // [문제] int remainingKm(int target, int total)을 정의하세요.
@@ -59,9 +65,15 @@ void step1() {
 void step2() {
   print('--- 2단계 ---');
   // TODO ①: 여기서 두 호출을 각각 print 안에 넣으세요.
+  print(remainingKm(10, 6));
+  print(remainingKm(10, 12));
 }
 
 // TODO ②: 여기에 int remainingKm(int target, int total)을 정의하세요.
+int remainingKm(int target, int total) {
+  if(total >= target) return 0;
+  return target - total;
+}
 
 // ━━━━━━━━━━ 3단계: Runnery 코드 읽고 옮기기 ━━━━━━━━━━
 // Runnery의 RunningFormat.time은 기록 시각을 '오후 7:42'처럼 보여줘요. 그 안에 이런 두 줄이 있어요.
